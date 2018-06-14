@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Client:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Client_jar</output-path>
+    <root id="archive" name="Lab3.jar">
+      <element id="module-output" name="Lab3" />
+      <element id="extracted-dir" path="$USER_HOME$/.IntelliJIdea2017.2/gson-2.6.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/redist/annotations-java8.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
