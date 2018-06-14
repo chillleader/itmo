@@ -7,11 +7,16 @@ import ru.ifmo.se.Karlsson.Human;
 import ru.ifmo.se.Karlsson.Main;
 import ru.ifmo.se.Karlsson.State;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.TypeVariable;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class DBManager {
@@ -23,13 +28,24 @@ public class DBManager {
     private static ArrayList<String> fields = new ArrayList<>();
     private static ArrayList<Class> types = new ArrayList<>();
 
+    private static Properties login = new Properties();
+
     private DBManager() {
     }
 
     public static void createSSHTunnel() {
-        String SSHHost = "se.ifmo.ru";
-        String SSHUser = "s243854";
-        String SSHPassword = "cuu001";
+        try {
+            FileInputStream stream = new FileInputStream("login.properties");
+            login.load(stream);
+        } catch (FileNotFoundException e) {
+            System.err.print(e);
+        } catch (IOException e) {
+            System.err.print(e);
+        }
+
+        String SSHHost = login.getProperty("host");
+        String SSHUser = login.getProperty("login");
+        String SSHPassword = login.getProperty("password");
         int SSHPort = 2222;
 
         String remoteHost = "pg";
@@ -61,7 +77,7 @@ public class DBManager {
 
             studsConnection = DriverManager
                     .getConnection("jdbc:postgresql://localhost:5432/studs",
-                            "s243854", "cuu001");
+                            login.getProperty("login"), login.getProperty("password"));
 
             System.out.println("База данных подключена");
             Server.gui.dbName.setText("Helios/studs");
