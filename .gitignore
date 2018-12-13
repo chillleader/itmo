@@ -1,3 +1,6 @@
 # Ignore IntellIJ Idea files
 .idea/*
 *.iml
+
+# Ignore lib files
+lib/*
