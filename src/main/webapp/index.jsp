@@ -1,11 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Pihanya
-  Date: 14.12.2018
-  Time: 1:56 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"
+        language="java"
+        import="java.util.List, java.util.ArrayList, servlet.ControllerServlet servlet.AreaCheckServlet"
+        session="true"
+%>
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
