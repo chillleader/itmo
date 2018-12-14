@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"
         language="java"
-        import="java.util.List, java.util.ArrayList, servlet.ControllerServlet servlet.AreaCheckServlet"
+        import="java.util.List, java.util.ArrayList, servlet.ControllerServlet, servlet.AreaCheckServlet"
         session="true"
 %>
 
