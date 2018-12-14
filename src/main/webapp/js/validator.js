@@ -25,8 +25,8 @@ function checkForm(form) {
     } else if (valueY.length > 12) {
         message += "Длина строки с Y не должна превышать 12 символов<br>";
         valid = false;
-    } else if (parseFloat(valueY) >= -5 || parseFloat(
-        valueY) <= 5) {
+    } else if (parseFloat(valueY) <= -5 || parseFloat(
+        valueY) >= 5) {
         message += "Y должен принадлежать промежутку [-5; 5]<br>";
         valid = false;
     }
