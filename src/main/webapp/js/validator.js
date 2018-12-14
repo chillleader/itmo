@@ -1,49 +1,50 @@
+const X_CHECKBOX_AMOUNT = 9;
+
 function checkForm(form) {
-  valid = true;
-  message = "<b>Форма содержит следующие ошибки:</b><br>";
+    let valid = true;
+    let message = "<b>Форма содержит следующие ошибки:</b><br>";
 
-  if (
-      !(
-          document.getElementById("x0").checked
-          || document.getElementById("x1").checked
-          || document.getElementById("x2").checked
-          || document.getElementById("x3").checked
-          || document.getElementById("x4").checked
-          || document.getElementById("x5").checked
-          || document.getElementById("x6").checked
-          || document.getElementById("x7").checked
-          || document.getElementById("x8").checked
-      )) {
-    message += "Выберите хотя бы одно значение X<br>";
-    valid = false;
-  }
+    let valueY = document.data.y.value;
+    let valueR = document.data.r.value;
 
-  if (isNaN(+(document.data.y.value))) {
-    message += "Y должен быть числом<br>";
-    valid = false;
-  } else if (document.data.y.value.length > 17) {
-    message += "Длина строки с Y не должна превышать 17 символов<br>";
-    valid = false;
-  } else if (parseFloat(document.data.y.value) >= 3 || parseFloat(
-      document.data.y.value) <= -3) {
-    message += "Y должен принадлежать промежутку (-3; 3)<br>";
-    valid = false;
-  }
+    let atLeastOneChecked = false;
+    for (i = 0; i < X_CHECKBOX_AMOUNT; ++i) {
+        if (document.getElementById("x" + i).checked) {
+            atLeastOneChecked = true;
+        }
+    }
 
-  if (!(
-      document.getElementById("y0").checked
-      || document.getElementById("y1").checked
-      || document.getElementById("y2").checked
-      || document.getElementById("y3").checked
-      || document.getElementById("y4").checked
-  )) {
-    message += "Выберите хотя бы одно значение R<br>";
-    valid = false;
-  }
+    if (!atLeastOneChecked) {
+        message += "Выберите хотя бы одно значение X<br>";
+        valid = false;
+    }
 
-  if (!valid) {
-    document.getElementById("errors").innerHTML = message;
-  }
+    if (isNaN(+(valueY))) {
+        message += "Значение Y должно быть числом<br>";
+        valid = false;
+    } else if (valueY.length > 12) {
+        message += "Длина строки с Y не должна превышать 12 символов<br>";
+        valid = false;
+    } else if (parseFloat(valueY) >= -5 || parseFloat(
+        valueY) <= 5) {
+        message += "Y должен принадлежать промежутку [-5; 5]<br>";
+        valid = false;
+    }
 
-  return valid;
+    if (isNaN(+(valueR))) {
+        message += "Значение R должно быть числом<br>";
+        valid = false;
+    } else if (valueR.length > 12) {
+        message += "Длина строки с R не должна превышать 12 символов<br>";
+        valid = false;
+    } else if (parseFloat(valueR) >= 1 || parseFloat(valueR) <= 4) {
+        message += "R должен принадлежать промежутку [1; 4]<br>";
+        valid = false;
+    }
+
+    if (!valid) {
+        document.getElementById("errors").innerHTML = message;
+    }
+
+    return valid;
 }

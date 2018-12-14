@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Mikhail Gostev & Pavel Kotelevsky">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>ЛР №2</title>
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script type="text/javascript" src="js/validator.js"></script>
+    <script type="text/javascript" src="js/canvas.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<table>
+    <tr>
+        <td id="header" colspan="3">
+            <p id="name">
+                Лабораторная работа №2<br>
+                Группу P3201, Вариант 18141<br>
+                Котелевский Павел Георгиевич<br>
+                Гостев Михаил Владимирович
+            </p>
+        <td>
+    </tr>
+    <tr id="content">
+        <td id="col1">
+            Приложение определяет, входят ли указанные пользователем точки в заданную область.
+        </td>
+        <td id="col2">
+            <form id="form" name="data"
+                  onsubmit="return checkForm();"
+                  method="POST" action="">
+                <fieldset>
+                    <legend>Значения Х</legend>
+                    <label><input type="checkbox" name="x" value="-4" id="x0">-5</label><br>
+                    <label><input type="checkbox" name="x" value="-3" id="x1">-4</label><br>
+                    <label><input type="checkbox" name="x" value="-2" id="x2">-3</label><br>
+                    <label><input type="checkbox" name="x" value="-1" id="x3">-2</label><br>
+                    <label><input type="checkbox" name="x" value="0" id="x4">-1</label><br>
+                    <label><input type="checkbox" name="x" value="1" id="x5"> 0</label><br>
+                    <label><input type="checkbox" name="x" value="2" id="x6"> 1</label><br>
+                    <label><input type="checkbox" name="x" value="3" id="x7"> 2</label><br>
+                    <label><input type="checkbox" name="x" value="4" id="x8"> 3</label><br>
+                </fieldset>
+                <fieldset>
+                    <legend>Значение Y</legend>
+                    Введите значение в промежутке [-5; 5]
+                    <p><input type="text" name="y" required>
+                </fieldset>
+                <fieldset>
+                    <legend>Значения R</legend>
+                    Введите значение в промежутке [1; 4]
+                    <p><input type="text" name="r" required>
+                </fieldset>
+                <div id="errors"></div>
+                <input type="submit" value="Отправить">
+            </form>
+        </td>
+        <td id="col3">
+            <canvas id="canvas"
+                    onclick="onClickCanvasEvent('canvas',document.getElementById('form').r.value)"
+                    style="background-color:#ffffff; border-radius: 20px;" width="300"
+                    height="300"></canvas>
+            <script>drawCanvas("canvas", 5)</script>
+        </td>
+
+    </tr>
+    <tr>
+        <td id="footer" colspan="3"><p id="footer-text">&copy; Университет ИТМО 2018</p></td>
+    </tr>
+</table>
+</body>
+</html>

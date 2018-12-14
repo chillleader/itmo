@@ -22,7 +22,30 @@
     </dependency>
   </dependencies>
 
+
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+          <webResources>
+            <resource>
+              <!-- this is relative to the pom.xml directory -->
+              <directory>${project.basedir}/src/main/webapp</directory>
+              <includes>
+                <include>*.jsp</include>
+                <include>img/*</include>
+                <include>css/*</include>
+                <include>js/*</include>
+              </includes>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>
