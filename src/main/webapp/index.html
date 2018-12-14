@@ -5,14 +5,15 @@
     <meta name="author" content="Mikhail Gostev & Pavel Kotelevsky">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>ЛР №2</title>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
 
+    <!--<script type="text/javascript" src="js/validator.js"></script>-->
+    <!--<script type="text/javascript" src="js/canvas.js"></script>-->
+    <!--<script type="text/javascript" src="js/events.js"></script>-->
+    <script type="text/javascript" src="js/script.js"></script>
     <link rel="stylesheet" type="text/css" href="css/main.css">
-
-    <script type="text/javascript" src="js/validator.js"></script>
-    <script type="text/javascript" src="js/canvas.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
-<body>
+<body onload="drawCanvas('canvas', 1)">
 <table>
     <tr>
         <td id="header" colspan="3">
@@ -34,15 +35,16 @@
                   method="POST" action="">
                 <fieldset>
                     <legend>Значения Х</legend>
-                    <label><input type="checkbox" name="x" value="-4" id="x0">-5</label><br>
-                    <label><input type="checkbox" name="x" value="-3" id="x1">-4</label><br>
-                    <label><input type="checkbox" name="x" value="-2" id="x2">-3</label><br>
-                    <label><input type="checkbox" name="x" value="-1" id="x3">-2</label><br>
-                    <label><input type="checkbox" name="x" value="0" id="x4">-1</label><br>
-                    <label><input type="checkbox" name="x" value="1" id="x5"> 0</label><br>
-                    <label><input type="checkbox" name="x" value="2" id="x6"> 1</label><br>
-                    <label><input type="checkbox" name="x" value="3" id="x7"> 2</label><br>
-                    <label><input type="checkbox" name="x" value="4" id="x8"> 3</label><br>
+                    <label><input type="checkbox" name="x" value="-5" id="x0">-5</label><br>
+                    <label><input type="checkbox" name="x" value="-4" id="x1">-5</label><br>
+                    <label><input type="checkbox" name="x" value="-3" id="x2">-4</label><br>
+                    <label><input type="checkbox" name="x" value="-2" id="x3">-3</label><br>
+                    <label><input type="checkbox" name="x" value="-1" id="x4">-2</label><br>
+                    <label><input type="checkbox" name="x" value="0" id="x5">-1</label><br>
+                    <label><input type="checkbox" name="x" value="1" id="x6"> 0</label><br>
+                    <label><input type="checkbox" name="x" value="2" id="x7"> 1</label><br>
+                    <label><input type="checkbox" name="x" value="3" id="x8"> 2</label><br>
+                    <label><input type="checkbox" name="x" value="4" id="x9"> 3</label><br>
                 </fieldset>
                 <fieldset>
                     <legend>Значение Y</legend>
@@ -60,10 +62,9 @@
         </td>
         <td id="col3">
             <canvas id="canvas"
-                    onclick="onClickCanvasEvent('canvas',document.getElementById('form').r.value)"
+                    onclick="onClickCanvasHandler('canvas', document.getElementById('form').r.value)"
                     style="background-color:#ffffff; border-radius: 20px;" width="300"
                     height="300"></canvas>
-            <script>drawCanvas("canvas", 5)</script>
         </td>
 
     </tr>
