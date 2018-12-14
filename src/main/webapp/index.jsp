@@ -33,18 +33,18 @@
             Приложение определяет, входят ли указанные пользователем точки в заданную область.
         </td>
         <td id="col2">
-            <form name="data" onsubmit="return checkForm();" method="post" action="script.php">
+            <form name="data" onsubmit="return checkForm();" method="post" action="${pageContext.request.contextPath}/check">
                 <fieldset>
                     <legend>Значения Х</legend>
-                    <label><input type="checkbox" name="x[]" value="-4" id="x0"> - -4</label><br>
-                    <label><input type="checkbox" name="x[]" value="-3" id="x1"> - -3</label><br>
-                    <label><input type="checkbox" name="x[]" value="-2" id="x2"> - -2</label><br>
-                    <label><input type="checkbox" name="x[]" value="-1" id="x3"> - -1</label><br>
-                    <label><input type="checkbox" name="x[]" value="0" id="x4"> - 0</label><br>
-                    <label><input type="checkbox" name="x[]" value="1" id="x5"> - 1</label><br>
-                    <label><input type="checkbox" name="x[]" value="2" id="x6"> - 2</label><br>
-                    <label><input type="checkbox" name="x[]" value="3" id="x7"> - 3</label><br>
-                    <label><input type="checkbox" name="x[]" value="4" id="x8"> - 4</label><br>
+                    <label><input type="checkbox" name="x" value="-4" id="x0"> - -4</label><br>
+                    <label><input type="checkbox" name="x" value="-3" id="x1"> - -3</label><br>
+                    <label><input type="checkbox" name="x" value="-2" id="x2"> - -2</label><br>
+                    <label><input type="checkbox" name="x" value="-1" id="x3"> - -1</label><br>
+                    <label><input type="checkbox" name="x" value="0" id="x4"> - 0</label><br>
+                    <label><input type="checkbox" name="x" value="1" id="x5"> - 1</label><br>
+                    <label><input type="checkbox" name="x" value="2" id="x6"> - 2</label><br>
+                    <label><input type="checkbox" name="x" value="3" id="x7"> - 3</label><br>
+                    <label><input type="checkbox" name="x" value="4" id="x8"> - 4</label><br>
                 </fieldset>
                 <fieldset>
                     <legend>Значение Y</legend>
@@ -53,11 +53,11 @@
                 </fieldset>
                 <fieldset>
                     <legend>Значения R</legend>
-                    <label><input type="checkbox" name="r[]" value="1" id="y0"> - 1</label><br>
-                    <label><input type="checkbox" name="r[]" value="1.5" id="y1"> - 1.5</label><br>
-                    <label><input type="checkbox" name="r[]" value="2" id="y2"> - 2</label><br>
-                    <label><input type="checkbox" name="r[]" value="2.5" id="y3"> - 2.5</label><br>
-                    <label><input type="checkbox" name="r[]" value="3" id="y4"> - 3</label><br>
+                    <label><input type="checkbox" name="r" value="1" id="y0"> - 1</label><br>
+                    <label><input type="checkbox" name="r" value="1.5" id="y1"> - 1.5</label><br>
+                    <label><input type="checkbox" name="r" value="2" id="y2"> - 2</label><br>
+                    <label><input type="checkbox" name="r" value="2.5" id="y3"> - 2.5</label><br>
+                    <label><input type="checkbox" name="r" value="3" id="y4"> - 3</label><br>
                 </fieldset>
                 <div id="errors"></div>
                 <input type="submit" value="Отправить">
