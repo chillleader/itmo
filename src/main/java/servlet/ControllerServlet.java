@@ -30,4 +30,9 @@ public class ControllerServlet extends HttpServlet {
     }
     else pw.println("Wrong");
   }
+
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    //todo: implement forwarding to jsp
+  }
 }

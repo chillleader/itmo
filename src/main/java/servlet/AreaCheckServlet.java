@@ -59,19 +59,11 @@ public class AreaCheckServlet extends HttpServlet {
     history.addAll(newHistory);
     session.setAttribute("history", history);
     session.setAttribute("current", checkResults);
-    RequestDispatcher rd = req.getRequestDispatcher(JSP_HANDLER);
-    rd.forward(req, resp);
+    checkResults.addAll(history);
+    pw.println(parseJSON(checkResults));
+    //RequestDispatcher rd = req.getRequestDispatcher(JSP_HANDLER);
+    //rd.forward(req, resp);
 
-  }
-
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
-    double x = Double.parseDouble(req.getParameter("x"));
-    double y = Double.parseDouble(req.getParameter("y"));
-    double r = Double.parseDouble(req.getParameter("r"));
-    PrintWriter pw = resp.getWriter();
-    pw.print(checkPoint(x, y, r));
   }
 
   private boolean checkPoint(double x, double y, double r) {
@@ -87,5 +79,24 @@ public class AreaCheckServlet extends HttpServlet {
       res = (y <= -x + r && y >= 0);
     }
     return res;
+  }
+
+  private String parseJSON(List<Request> points) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"points\":[");
+    for (Request r : points) {
+      sb.append("{\"x\":");
+      sb.append(r.x);
+      sb.append(",\"y\":");
+      sb.append(r.y);
+      sb.append(",\"r\":");
+      sb.append(r.r);
+      sb.append(",\"result\":");
+      sb.append(r.check);
+      sb.append("},");
+    }
+    sb.replace(sb.length() - 1, sb.length(), "");
+    sb.append("]}");
+    return sb.toString();
   }
 }
