@@ -64,6 +64,16 @@ public class AreaCheckServlet extends HttpServlet {
 
   }
 
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+    double x = Double.parseDouble(req.getParameter("x"));
+    double y = Double.parseDouble(req.getParameter("y"));
+    double r = Double.parseDouble(req.getParameter("r"));
+    PrintWriter pw = resp.getWriter();
+    pw.print(checkPoint(x, y, r));
+  }
+
   private boolean checkPoint(double x, double y, double r) {
     if (r < 0) return false;
     boolean res;
