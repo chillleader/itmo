@@ -49,6 +49,12 @@ public class AreaCheckServlet extends HttpServlet {
     } else {
       history = (List<Request>) session.getAttribute("history");
     }
+
+
+    if(xValues == null && yValues == null && rValues == null) {
+      pw.println(parseJSON(history));
+    }
+
     double xi, yi, ri;
 
     for (String x : xValues) {
@@ -103,29 +109,51 @@ public class AreaCheckServlet extends HttpServlet {
   private void createAndSendPage(List<Request> resultPoint, HttpServletRequest req,
       HttpServletResponse resp) throws IOException {
     resp.setContentType("text/html; charset=cp1251");
-    resp.getWriter().append("<html><body>");
-    resp.getWriter().append("<style>" + STYLE + "</style>");
-    resp.getWriter().append(
-        "<table class=\".inner\">");
-    resp.getWriter().append("<tr>");
-    resp.getWriter().append("<td>X</td>");
-    resp.getWriter().append("<td>Y</td>");
-    resp.getWriter().append("<td>R</td>");
-    resp.getWriter().append("<td>Result</td>");
-    resp.getWriter().append("</tr>");
+
+    PrintWriter writer = resp.getWriter();
+    writer.append("<html><body>");
+    writer.append("<style>" + STYLE + "</style>");
+    writer.append(
+        "<table class=\"inner\">");
+    writer.append("<tr>");
+    writer.append("<td>X</td>");
+    writer.append("<td>Y</td>");
+    writer.append("<td>R</td>");
+    writer.append("<td>Result</td>");
+    writer.append("</tr>");
     if (resultPoint != null) {
       for (Request request : resultPoint) {
-        resp.getWriter().append("<tr>");
-        resp.getWriter().append("<td>").append(String.valueOf(request.x)).append("</td>");
-        resp.getWriter().append("<td>").append(String.valueOf(request.y)).append("</td>");
-        resp.getWriter().append("<td>").append(String.valueOf(request.r)).append("</td>");
-        resp.getWriter().append("<td>").append(String.valueOf(request.check)).append("</td>");
-        resp.getWriter().append("</tr>");
+        writer.append("<tr>");
+        writer.append("<td>").append(String.valueOf(request.x)).append("</td>");
+        writer.append("<td>").append(String.valueOf(request.y)).append("</td>");
+        writer.append("<td>").append(String.valueOf(request.r)).append("</td>");
+        writer.append("<td>").append(String.valueOf(request.check)).append("</td>");
+        writer.append("</tr>");
       }
     }
-    resp.getWriter().append("</table>");
-    resp.getWriter().append("<a href=\"" + req.getContextPath()
+    writer.append("</table>");
+    writer.append("<a href=\"" + req.getContextPath()
         + "\" style=\"position: absolute; right: 10%; bottom: 10%;\">Вернуться</a>");
-    resp.getWriter().append("</body></html>");
+    writer.append("</body></html>");
+
+  }
+
+  private String parseJSON(List<Request> points) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"points\":[");
+    for (Request r : points) {
+      sb.append("{\"x\":");
+      sb.append(r.x);
+      sb.append(",\"y\":");
+      sb.append(r.y);
+      sb.append(",\"r\":");
+      sb.append(r.r);
+      sb.append(",\"result\":");
+      sb.append(r.check);
+      sb.append("},");
+    }
+    sb.replace(sb.length() - 1, sb.length(), "");
+    sb.append("]}");
+    return sb.toString();
   }
 }
