@@ -50,8 +50,7 @@ public class AreaCheckServlet extends HttpServlet {
       history = (List<Request>) session.getAttribute("history");
     }
 
-
-    if(xValues == null && yValues == null && rValues == null) {
+    if (xValues == null && yValues == null && rValues == null) {
       pw.println(parseJSON(history));
     }
 
@@ -84,7 +83,11 @@ public class AreaCheckServlet extends HttpServlet {
     session.setAttribute("current", checkResults);
     checkResults.addAll(history);
 
-    createAndSendPage(newHistory, req, resp);
+    if (req.getParameter("redirect") == null || Boolean.valueOf(req.getParameter("redirect"))) {
+      createAndSendPage(newHistory, req, resp);
+    } else {
+      resp.getWriter().print(parseJSON(checkResults));
+    }
   }
 
   private boolean checkPoint(double x, double y, double r) {

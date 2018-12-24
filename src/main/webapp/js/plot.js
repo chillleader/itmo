@@ -101,23 +101,26 @@ function drawCanvas(r) {
   context.stroke();
 }
 
-function createCanvas(x, y, r) {
-  drawCanvas(r);
-
-  let canvas = document.querySelector("#canvas");
-  let context = canvas.getContext("2d");
-
-  context.beginPath();
-  context.rect(Math.round(150 + ((x / r) * 130)) - 2,
-      Math.round(150 - ((y / r) * 130)) - 2, 4, 4);
-  context.closePath();
-  context.strokeStyle = "red";
-  context.fillStyle = "red";
-  context.fill();
-  context.stroke();
-}
-
 function isArea(x, y, r) {
+  /*let points = [];
+
+  let xmlHttpRequest = new XMLHttpRequest();
+  xmlHttpRequest.open("POST", "/", true);
+  xmlHttpRequest.setRequestHeader('Content-Type',
+      'application/x-www-form-urlencoded');
+  let body = "x=" + x + "&y=" + y + "&r=" + r + "&redirect=false";
+  xmlHttpRequest.send(body);
+  xmlHttpRequest.onreadystatechange = function () {
+    if (xmlHttpRequest.readyState !== 4) {
+      return;
+    }
+
+    if (xmlHttpRequest.status === 200) {
+      points = JSON.parse(xmlHttpRequest.responseText).points;
+    }
+  };
+
+  return points[points.length - 1].check;*/
   x = (x - 150) / 130;
   y = (150 - y) / 130;
 
@@ -132,7 +135,7 @@ function isArea(x, y, r) {
     if (Math.abs(x) > r || Math.abs(y) > r) {
       res = false;
     } else {
-      res = (Math.sqrt(x * x + y * y) <= r/2);
+      res = (Math.sqrt(x * x + y * y) <= r / 2);
     }
   } else {
     res = (y <= -x + r && y >= 0);
@@ -147,14 +150,14 @@ function onCanvasClick() {
 
   let left = rect.left;
   let top = rect.top;
-  let event = window.event;
+  // let event = window.event;
 
   let x = event.clientX - left;
   let y = event.clientY - top;
   let boolArea = isArea(x, y, currentR);
 
   drawPoint(x, y, boolArea);
-};
+}
 
 function drawPoint(x, y, isArea) {
   let canvas = document.querySelector("#canvas");
@@ -173,6 +176,27 @@ function drawPoint(x, y, isArea) {
 
   context.fill();
   context.stroke();
+}
+
+function getPoints() {
+  let points = [];
+
+  let xmlHttpRequest = new XMLHttpRequest();
+  xmlHttpRequest.open("POST", "/", true);
+  xmlHttpRequest.setRequestHeader('Content-Type',
+      'application/x-www-form-urlencoded');
+  xmlHttpRequest.send();
+  xmlHttpRequest.onreadystatechange = function () {
+    if (xmlHttpRequest.readyState !== 4) {
+      return;
+    }
+
+    if (xmlHttpRequest.status === 200) {
+      points = JSON.parse(sessionStorage.getItem("points")).points;
+    }
+  };
+
+  return points;
 }
 
 /*
@@ -206,25 +230,4 @@ plot.onclick =
         plot.appendChild(element);
       }
     };
-
-function getPoints() {
-  let points = [];
-
-  let xmlHttpRequest = new XMLHttpRequest();
-  xmlHttpRequest.open("POST", "/", true);
-  xmlHttpRequest.setRequestHeader('Content-Type',
-      'application/x-www-form-urlencoded');
-  xmlHttpRequest.send();
-  xmlHttpRequest.onreadystatechange = function () {
-    if (xmlHttpRequest.readyState !== 4) {
-      return;
-    }
-
-    if (xmlHttpRequest.status === 200) {
-      points = JSON.parse(sessionStorage.getItem("points")).points;
-    }
-  };
-
-  return points;
-}
  */

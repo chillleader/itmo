@@ -1,4 +1,4 @@
-document.querySelector("#data-form").onsubmit = function () {
+function onFormSubmit() {
   let form = document.querySelector("#data-form");
 
   let valid = true;
