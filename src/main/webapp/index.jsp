@@ -8,13 +8,18 @@
     <meta name="author" content="Mikhail Gostev & Pavel Kotelevsky">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>ЛР №2</title>
-
-    <script src="jquery-3.3.1.min.js"></script>
     <style>
         <%@include file='css/style.css' %>
     </style>
+    <%--<link rel=stylesheet type="text/css" href="css/style.css">--%>
+
+    <script type="text/javascript"> <%@include file='js/form_validator.js' %> </script>
+    <script type="text/javascript"> <%@include file='js/plot.js' %> </script>
+
+    <%--<script type="text/javascript" src="js/form_validator.js"></script>--%>
+    <%--<script type="text/javascript" src="js/plot.js"></script>--%>
 </head>
-<body>
+<body onload="drawCanvas(1)">
 <table>
     <tr>
         <td id="header" colspan="3">
@@ -86,7 +91,7 @@
                 <fieldset>
                     <legend>Значения R</legend>
                     Введите значение в промежутке [1; 4]
-                    <p><input type="text" name="r" required onchange="resize_area()">
+                    <p><input oninput="onRadiusInput()" type="text" name="r" required>
                 </fieldset>
                 <div id="errors"></div>
                 <input type="submit" value="Отправить">
@@ -96,15 +101,18 @@
             <p>Приложение определяет, входят ли указанные пользователем точки в заданную
                 область.</p>
 
-            <svg id="plot-svg" width="380" height="420">
-                <circle r="90" cx="190" cy="210" fill="rgb(51, 153, 255)"></circle>
-                <polygon points="190,210 190,30 370,210" fill="rgb(51, 153, 255)"></polygon>
-                <polygon points="190,210 190,390 370,390 370,210" fill="white"></polygon>
-                <polygon points="190,210 190,300 10,300 10,210" fill="rgb(51, 153, 255)"></polygon>
-                <line x1="190" x2="190" y1="0" y2="420" stroke="black" stroke-width="3"></line>
-                <line x1="0" x2="380" y1="210" y2="210" stroke="black" stroke-width="3"></line>
-                <text id="svg_text_r" x="200" y="240">R = 1</text>
-            </svg>
+            <!--&#45;&#45;<svg id="plot-svg" width="380" height="420">
+      <circle r="90" cx="190" cy="210" fill="rgb(51, 153, 255)"></circle>
+      <polygon points="190,210 190,30 370,210" fill="rgb(51, 153, 255)"></polygon>
+      <polygon points="190,210 190,390 370,390 370,210" fill="white"></polygon>
+      <polygon points="190,210 190,300 10,300 10,210" fill="rgb(51, 153, 255)"></polygon>
+      <line x1="190" x2="190" y1="0" y2="420" stroke="black" stroke-width="3"></line>
+      <line x1="0" x2="380" y1="210" y2="210" stroke="black" stroke-width="3"></line>
+      <text id="svg_text_r" x="200" y="240">R = 1</text>
+    </svg>&#45;&#45;-->
+            <canvas id="canvas" onclick="onCanvasClick()"
+                    style="background-color:#ffffff; border-radius: 20px;" width="300"
+                    height="300"></canvas>
         </td>
 
     </tr>
@@ -113,6 +121,4 @@
     </tr>
 </table>
 </body>
-
-<script type="text/javascript"> <%@include file='js/script.js' %> </script>
 </html>
