@@ -1,153 +1,116 @@
-const CANVAS_COLOR = "rgb(51, 153, 255)";
+function resize_area(valueR) {
+  var oldR = inputR.value;
+  inputR.value = valueR;
+  var rOnChart = document.querySelector("text");
+  rOnChart.innerHTML = "R = " + valueR;
 
-const X_CHECKBOX_AMOUNT = 9;
-const X_MIN_VALUE = -5;
+  var dots = document.querySelectorAll("circle[name='dot']");
 
-function drawCanvas(canvasElementId, r) {
-  let canvas = document.getElementById(canvasElementId),
-      context = canvas.getContext("2d");
-  // Cleaning
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  for (var i = 0; i < dots.length; i++) {
+    var cx = (dots[i].cx.animVal.value - 190) * oldR / valueR + 190;
+    var cy = (dots[i].cy.animVal.value - 210) * oldR / valueR + 210;
 
-  // Rectangle
-  context.beginPath();
-  context.rect(150, 150, -130, 65);
-  context.closePath();
-  context.strokeStyle = CANVAS_COLOR;
-  context.fillStyle = CANVAS_COLOR;
-  context.fill();
-  context.stroke();
-
-  // Sector
-  context.beginPath();
-  context.moveTo(150, 150);
-  context.arc(150, 150, 65, -Math.PI / 2, -Math.PI, true);
-  context.closePath();
-  context.strokeStyle = CANVAS_COLOR;
-  context.fillStyle = CANVAS_COLOR;
-  context.fill();
-  context.stroke();
-
-  // Triangle
-  context.beginPath();
-  context.moveTo(150, 150);
-  context.lineTo(150, 20);
-  context.lineTo(270, 150);
-  context.lineTo(150, 150);
-  context.closePath();
-  context.strokeStyle = CANVAS_COLOR;
-  context.fillStyle = CANVAS_COLOR;
-  context.fill();
-  context.stroke();
-
-  // Drawing of axis
-  context.beginPath();
-  context.font = "10px Verdana";
-  context.moveTo(150, 0);
-  context.lineTo(150, 300);
-  context.moveTo(150, 0);
-  context.lineTo(145, 15);
-  context.moveTo(150, 0);
-  context.lineTo(155, 15);
-  context.fillText("Y", 160, 10);
-  context.moveTo(0, 150);
-  context.lineTo(300, 150);
-  context.moveTo(300, 150);
-  context.lineTo(285, 145);
-  context.moveTo(300, 150);
-  context.lineTo(285, 155);
-  context.fillText("X", 290, 135);
-
-  context.strokeStyle = "black";
-  context.fillStyle = "black";
-
-  // X axis
-  context.moveTo(145, 20);
-  context.lineTo(155, 20);
-  context.fillText(r, 160, 20);
-  context.moveTo(145, 85);
-  context.lineTo(155, 85);
-  context.fillText((r / 2), 160, 78);
-  context.moveTo(145, 215);
-  context.lineTo(155, 215);
-  context.fillText(-(r / 2), 160, 215);
-  context.moveTo(145, 280);
-  context.lineTo(155, 280);
-  context.fillText(-r, 160, 280);
-
-  // Y axis
-  context.moveTo(20, 145);
-  context.lineTo(20, 155);
-  context.fillText(-r, 20, 170);
-  context.moveTo(85, 145);
-  context.lineTo(85, 155);
-  context.fillText(-(r / 2), 70, 170);
-  context.moveTo(215, 145);
-  context.lineTo(215, 155);
-  context.fillText((r / 2), 215, 170);
-  context.moveTo(280, 145);
-  context.lineTo(280, 155);
-  context.fillText(r, 280, 170);
-
-  context.closePath();
-  context.stroke();
+    dots[i].setAttribute("cx", cx);
+    dots[i].setAttribute("cy", cy);
+  }
 }
 
-function createCanvas(id, x, y, r) {
-  drawCanvas(id, r);
-  context.beginPath();
-  context.rect(Math.round(150 + ((x / r) * 130)) - 2,
-      Math.round(150 - ((y / r) * 130)) - 2, 4, 4);
-  context.closePath();
-  context.strokeStyle = "red";
-  context.fillStyle = "red";
-  context.fill();
-  context.stroke();
+document.getElementById("plot-svg").onclick =
+    function (event) {
 
-}
+      var elem = document.querySelector("#plot-svg");
+      var br = elem.getBoundingClientRect();
 
-function drawPoint(canvasId, x, y, color) {
-  let canvas = document.getElementById(canvasId),
-      context = canvas.getContext("2d");
+      var coordX = event.clientX - br.left;
+      var coordY = event.clientY - br.top;
 
-  context.beginPath();
-  context.rect(x - 2, y - 2, 4, 4);
-  context.closePath();
-  context.strokeStyle = color;
-  context.fillStyle = color;
-  context.fill();
-  context.stroke();
-}
+      console.log("X " + coordX + " Y: " + coordY);
+
+      let r = document.querySelector("#data-form").r.value;
+;
+      if (!(isNaN(r) || r === 0)) {
+        x = r * (coordX - 210) / 160;
+        y = r * (-(coordY - 190) / 160);
+
+        console.log("X " + x + " Y: " + y);
+        var element = document.createElement("circle");
+        element.setAttribute("name", "dot");
+        element.setAttribute("r", "2");
+        element.setAttribute("cx", coordX);
+        element.setAttribute("cy", coordY);
+        element.setAttribute("fill", "red");
+
+        document.querySelector("#plot-svg").appendChild(element);
+        // document.getElementById("plot-svg").contentWindow.reload(true);
+
+        // alert("X: " + x + " Y: " + y + " R: " + r);
+        var xmlHttpRequest = new XMLHttpRequest();
+
+        xmlHttpRequest.open("POST", "/", true);
+        xmlHttpRequest.setRequestHeader('Content-Type',
+            'application/x-www-form-urlencoded');
+        var body = 'x=' + encodeURIComponent(x*r) +
+            '&y=' + encodeURIComponent(y*r) +
+            '&r=' + encodeURIComponent(r);
+        xmlHttpRequest.send(body);
+
+        var points = [];
+        xmlHttpRequest.onreadystatechange = function () {
+          if (xmlHttpRequest.readyState !== 4) {
+            console.log("exception");
+            return;
+          }
+
+          if (xmlHttpRequest.status != 200) {
+            console.log("ura");
+            alert(xmlHttpRequest.status + ': ' + xmlHttpRequest.statusText);
+          } else {
+            console.log("exc 2");
+          }
+        };
+      }
+    };
 
 function checkForm(form) {
   let valid = true;
-  let message = "<b>Форма содержит следующие ошибки:</b><br>";
+  // let message = "<b>Форма содержит следующие ошибки:</b><br>";
+  let message = "<b>There are the following errors in the form:</b><br>";
 
   let valueX;
-  let valueY = document.data.y.value;
-  let valueR = document.data.r.value;
+  let valueY = document.getElementById("data-form").y.value;
+  let valueR = document.getElementById("data-form").r.value;
 
   let atLeastOneChecked = false;
-  for (let i = 0; i < X_CHECKBOX_AMOUNT; ++i) {
+  for (let i = 0; i < 9; ++i) {
     if (document.getElementById("x" + i).checked) {
-      valueX = X_MIN_VALUE + i;
+      if (atLeastOneChecked) {
+        // message += "Необходимо выбрать лишь одно значение X<br>";
+        message += "Only one X value should be checked<br>";
+        valid = false;
+        break;
+      }
+      valueX = -5 + i;
       atLeastOneChecked = true;
     }
   }
 
   if (!atLeastOneChecked) {
-    message += "Выберите хотя бы одно значение X<br>";
+    // message += "Выберите хотя бы одно значение X<br>";
+    message += "At least one X value should be picked<br>";
     valid = false;
   }
 
   if (isNaN(+(valueY))) {
-    message += "Значение Y должно быть числом<br>";
+    // message += "Значение Y должно быть числом<br>";
+    message += "Y values should be a number<br>";
     valid = false;
   } else if (valueY.length > 12) {
-    message += "Длина строки с Y не должна превышать 12 символов<br>";
+    // message += "Длина строки с Y не должна превышать 12 символов<br>";
+    message += "The length of the Y should not exceed 12 symbols<br>";
     valid = false;
   } else if (parseFloat(valueY) < -5 || parseFloat(valueY) > 5) {
-    message += "Y должен принадлежать промежутку [-5; 5]<br>";
+    // message += "Y должен принадлежать промежутку [-5; 5]<br>";
+    message += "Y value should be in interval [-5; 5]<br>";
     valid = false;
   }
 
@@ -155,16 +118,15 @@ function checkForm(form) {
     message += "Значение R должно быть числом<br>";
     valid = false;
   } else if (valueR.length > 12) {
-    message += "Длина строки с R не должна превышать 12 символов<br>";
+    // message += "Длина строки с R не должна превышать 12 символов<br>";
+    message += "The length of the R should not exceed 12 symbols<br>";
     valid = false;
   } else if (parseFloat(valueR) < 1 || parseFloat(valueR) > 4) {
-    message += "R должен принадлежать промежутку [1; 4]<br>";
+    message += "R value should be in interval [-5; 5]<br>";
     valid = false;
   }
 
-  if (valid) {
-    createCanvas('canvas', valueX, valueY, valueR);
-  } else {
+  if (!valid) {
     document.getElementById("errors").innerHTML = message;
   }
 
@@ -172,10 +134,6 @@ function checkForm(form) {
 }
 
 function isInsideOfArea(x, y, r) {
-  if (r === "") {
-    r = 1;
-  }
-
   if (r < 0) {
     return false;
   }
@@ -194,39 +152,4 @@ function isInsideOfArea(x, y, r) {
   }
 
   return res;
-}
-
-function onClickCanvasHandler(canvasId, r) {
-  var elem = document.getElementById(canvasId);
-  var br = elem.getBoundingClientRect();
-  var left = br.left;
-  var top = br.top;
-
-  var event = window.event;
-  var x = event.clientX - left;
-  var y = event.clientY - top;
-
-  var isInside = false;
-  // var isInside = isInsideOfArea((x - 150) / 130, (150 - y) / 130, r);
-
-  var http = new XMLHttpRequest();
-  var url = 'areaCheck.jsp';
-  var params = 'x=' + x + ' + &y=' + y + '&r=' + r;
-  http.open('POST', url, true);
-
-  http.onreadystatechange = function () {//Call a function when the state changes.
-    if (http.readyState === 4 && http.status === 200) {
-      alert(http.responseText);
-      isInside = http.param("success", false);
-    }
-  };
-
-  http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  http.send(params);
-
-  if (isInside) {
-    drawPoint(canvasId, x, y, "green");
-  } else {
-    drawPoint(canvasId, x, y, "red");
-  }
 }

@@ -10,9 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ControllerServlet extends HttpServlet {
+
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+    req.setCharacterEncoding("UTF-8");
+    resp.setCharacterEncoding("UTF-8");
+    req.getRequestDispatcher("/index.jsp").forward(req, resp);
+  }
+
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    req.setCharacterEncoding("UTF-8");
+    resp.setCharacterEncoding("UTF-8");
     Enumeration<String> params = req.getParameterNames();
     PrintWriter pw = resp.getWriter();
     boolean hasX = false;
@@ -20,19 +31,19 @@ public class ControllerServlet extends HttpServlet {
     boolean hasR = false;
     while (params.hasMoreElements()) {
       String s = params.nextElement();
-      if (s.equals("x")) hasX = true;
-      else if (s.equals("y")) hasY = true;
-      else if (s.equals("r")) hasR = true;
+      if (s.equals("x")) {
+        hasX = true;
+      } else if (s.equals("y")) {
+        hasY = true;
+      } else if (s.equals("r")) {
+        hasR = true;
+      }
     }
     if (hasX && hasY && hasR) {
-      RequestDispatcher rd = req.getRequestDispatcher("areaCheck");
+      RequestDispatcher rd = req.getRequestDispatcher("check");
       rd.forward(req, resp);
+    } else {
+      pw.println("Wrong");
     }
-    else pw.println("Wrong");
-  }
-
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-    //todo: implement forwarding to jsp
   }
 }

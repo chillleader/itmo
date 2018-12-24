@@ -32,6 +32,7 @@ td img {
 
 /* каскадирование */
 table.inner {
+  width: 100%;
   border: 3px solid #4d7198;
   border-collapse: collapse;
   text-align: left;
@@ -63,6 +64,11 @@ table.inner th {
   font-family: serif;
 }
 
+#plot-svg {
+  /*background-color: #ffffff;*/
+  border-radius: 20px;
+}
+
 tr {
   padding-top: 5px;
 }
@@ -72,16 +78,16 @@ td {
   padding: 5px;
 }
 
-#col1 {
+#left-content-column {
   width: 25%;
   text-align: center;
 }
 
-#col2 {
+#middle-content-column {
   width: 50%;
 }
 
-#col3 {
+#right-content-column {
   width: 25%;
   text-align: center;
 }

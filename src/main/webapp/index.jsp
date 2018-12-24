@@ -1,19 +1,18 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"
-        language="java"
-        import="java.util.List, java.util.ArrayList, servlet.ControllerServlet, servlet.AreaCheckServlet"
-        session="true"
-%>
-
+<%@ page import="java.util.List" %>
+<%@ page import="servlet.Request" %>
+<%@ page contentType="text/html;charset=utf-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="Mikhail Gostev & Pavel Kotelevsky">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>ЛР №2</title>
 
-    <link rel="stylesheet" href="css/main.css">
-    <script type="text/javascript" src="js/validator.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <style>
+        <%@include file='css/style.css' %>
+    </style>
 </head>
 <body>
 <table>
@@ -21,49 +20,91 @@
         <td id="header" colspan="3">
             <p id="name">
                 Лабораторная работа №2<br>
-                Вариант 18141<br>
-                Котелевский Павел Георгиевич P3201<br>
-                Гостев Михаил Владимирович P3201
+                Группу P3201, Вариант 18141<br>
+                Котелевский Павел Георгиевич<br>
+                Гостев Михаил Владимирович
             </p>
         <td>
     </tr>
     <tr id="content">
-        <td id="col1">
-            Приложение определяет, входят ли указанные пользователем точки в заданную область.
+        <td id="left-content-column">
+            <table class="inner">
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>R</th>
+                    <th>Result</th>
+                </tr>
+
+                <%
+                    final String tableRowFormat = "<tr>"
+                            + "<td>%f</td>"
+                            + "<td>%f</td>"
+                            + "<td>%f</td>"
+                            + "<td>%s</td>"
+                            + "</tr>";
+
+                    StringBuilder table = new StringBuilder();
+
+                    try {
+                        List<Request> history = (List<Request>) session.getAttribute("history");
+                        if (history != null) {
+                            for (Request req : history) {
+                                table.append(String.format(tableRowFormat, req.x, req.y, req.r,
+                                        req.check ? "True" : "False"));
+                            }
+                        }
+                    } catch (IllegalStateException ex) {
+                    }
+                %>
+                <%= table.toString() %>
+            </table>
         </td>
-        <td id="col2">
-            <form name="data" onsubmit="return checkForm();" method="post" action="${pageContext.request.contextPath}/check">
+        <td id="middle-content-column">
+            <form id="data-form" name="data"
+                  onsubmit="return checkForm();"
+                  method="POST" action="${pageContext.request.contextPath}">
                 <fieldset>
                     <legend>Значения Х</legend>
-                    <label><input type="checkbox" name="x" value="-4" id="x0"> - -4</label><br>
-                    <label><input type="checkbox" name="x" value="-3" id="x1"> - -3</label><br>
-                    <label><input type="checkbox" name="x" value="-2" id="x2"> - -2</label><br>
-                    <label><input type="checkbox" name="x" value="-1" id="x3"> - -1</label><br>
-                    <label><input type="checkbox" name="x" value="0" id="x4"> - 0</label><br>
-                    <label><input type="checkbox" name="x" value="1" id="x5"> - 1</label><br>
-                    <label><input type="checkbox" name="x" value="2" id="x6"> - 2</label><br>
-                    <label><input type="checkbox" name="x" value="3" id="x7"> - 3</label><br>
-                    <label><input type="checkbox" name="x" value="4" id="x8"> - 4</label><br>
+                    <div id="xs_checkboxes">
+                        <label><input type="checkbox" name="x" value="-5" id="x0">-5</label><br>
+                        <label><input type="checkbox" name="x" value="-4" id="x1">-4</label><br>
+                        <label><input type="checkbox" name="x" value="-3" id="x2">-3</label><br>
+                        <label><input type="checkbox" name="x" value="-2" id="x3">-2</label><br>
+                        <label><input type="checkbox" name="x" value="-1" id="x4">-1</label><br>
+                        <label><input type="checkbox" name="x" value="0" id="x5"> 0</label><br>
+                        <label><input type="checkbox" name="x" value="1" id="x6"> 1</label><br>
+                        <label><input type="checkbox" name="x" value="2" id="x7"> 2</label><br>
+                        <label><input type="checkbox" name="x" value="3" id="x8"> 3</label><br>
+                    </div>
                 </fieldset>
                 <fieldset>
                     <legend>Значение Y</legend>
-                    Введите значение (-3; 3)
+                    Введите значение в промежутке [-5; 5]
                     <p><input type="text" name="y" required>
                 </fieldset>
                 <fieldset>
                     <legend>Значения R</legend>
-                    <label><input type="checkbox" name="r" value="1" id="y0"> - 1</label><br>
-                    <label><input type="checkbox" name="r" value="1.5" id="y1"> - 1.5</label><br>
-                    <label><input type="checkbox" name="r" value="2" id="y2"> - 2</label><br>
-                    <label><input type="checkbox" name="r" value="2.5" id="y3"> - 2.5</label><br>
-                    <label><input type="checkbox" name="r" value="3" id="y4"> - 3</label><br>
+                    Введите значение в промежутке [1; 4]
+                    <p><input type="text" name="r" required onchange="resize_area()">
                 </fieldset>
                 <div id="errors"></div>
                 <input type="submit" value="Отправить">
             </form>
         </td>
-        <td id="col3">
-            <img src="areas.png">
+        <td id="right-content-column">
+            <p>Приложение определяет, входят ли указанные пользователем точки в заданную
+                область.</p>
+
+            <svg id="plot-svg" width="380" height="420">
+                <circle r="90" cx="190" cy="210" fill="rgb(51, 153, 255)"></circle>
+                <polygon points="190,210 190,30 370,210" fill="rgb(51, 153, 255)"></polygon>
+                <polygon points="190,210 190,390 370,390 370,210" fill="white"></polygon>
+                <polygon points="190,210 190,300 10,300 10,210" fill="rgb(51, 153, 255)"></polygon>
+                <line x1="190" x2="190" y1="0" y2="420" stroke="black" stroke-width="3"></line>
+                <line x1="0" x2="380" y1="210" y2="210" stroke="black" stroke-width="3"></line>
+                <text id="svg_text_r" x="200" y="240">R = 1</text>
+            </svg>
         </td>
 
     </tr>
@@ -72,4 +113,6 @@
     </tr>
 </table>
 </body>
+
+<script type="text/javascript"> <%@include file='js/script.js' %> </script>
 </html>

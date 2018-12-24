@@ -7,7 +7,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,10 +16,10 @@ public class ValidationFilter implements Filter {
   private FilterConfig config = null;
 
   private double[] xValues = {-5, -4, -3, -2, -1, 0, 1, 2, 3};
-  private double yLowerBound = -5d;
-  private double yUpperBound = 5d;
-  private double rLowerBound = 1d;
-  private double rUpperBound = 4d;
+  private double yLowerBound = -5D;
+  private double yUpperBound = 5D;
+  private double rLowerBound = 1D;
+  private double rUpperBound = 4D;
 
   public void init(FilterConfig filterConfig) throws ServletException {
     this.config = filterConfig;
@@ -32,6 +31,12 @@ public class ValidationFilter implements Filter {
 
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
       FilterChain filterChain) throws IOException, ServletException {
+
+    HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+    if (httpRequest.getMethod().equalsIgnoreCase("POST")) {
+      filterChain.doFilter(servletRequest, servletResponse);
+    }
+
     HttpServletRequest req = (HttpServletRequest) servletRequest;
     HttpServletResponse resp = (HttpServletResponse) servletResponse;
     if (active) {
