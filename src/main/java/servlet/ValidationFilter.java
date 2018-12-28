@@ -25,7 +25,7 @@ public class ValidationFilter implements Filter {
     this.config = filterConfig;
     String act = config.getInitParameter("active");
     if (act != null) {
-      active = (act.toUpperCase().equals("TRUE"));
+      active = (Boolean.parseBoolean(act.toLowerCase()));
     }
   }
 
@@ -43,24 +43,18 @@ public class ValidationFilter implements Filter {
 
       //check if all params are present
 
-      boolean xOk = true, yOk, rOk;
+      boolean xOk = true, yOk = true, rOk = true;
 
       // check x array
-      String[] xArray = req.getParameterValues("x");
-      if (xArray == null) {
+      String valueX = req.getParameter("x");
+      if (valueX == null) {
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST); // Send 400
         return;
       }
-      for (String x : xArray) {
-        boolean curXOk = false;
-        for (Double d : xValues) {
-          if (Double.parseDouble(x) == d) {
-            curXOk = true;
-            break;
-          }
-        }
-        if (!curXOk) {
-          xOk = false;
+
+      for (Double d : xValues) {
+        if (Double.parseDouble(valueX) == d) {
+          xOk = true;
           break;
         }
       }
@@ -70,6 +64,7 @@ public class ValidationFilter implements Filter {
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST); // Send 400
         return;
       }
+
       double y = Double.parseDouble(req.getParameter("y"));
       yOk = (y > yLowerBound && y < yUpperBound);
 

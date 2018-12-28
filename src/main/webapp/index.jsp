@@ -13,11 +13,11 @@
     </style>
     <%--<link rel=stylesheet type="text/css" href="css/style.css">--%>
 
-    <script type="text/javascript"> <%@include file='js/form_validator.js' %> </script>
-    <script type="text/javascript"> <%@include file='js/plot.js' %> </script>
+    <script type="text/javascript"> <%@include file='js/events_handlers.js' %> </script>
+    <script type="text/javascript"> <%@include file='js/canvas.js' %> </script>
 
     <%--<script type="text/javascript" src="js/form_validator.js"></script>--%>
-    <%--<script type="text/javascript" src="js/plot.js"></script>--%>
+    <%--<script type="text/javascript" src="js/canvas.js"></script>--%>
 </head>
 <body onload="drawCanvas(1)">
 <table>
@@ -67,7 +67,7 @@
         </td>
         <td id="middle-content-column">
             <form id="data-form" name="data"
-                  onsubmit="return checkForm();"
+                  onsubmit="return onFormSubmit();"
                   method="POST" action="${pageContext.request.contextPath}">
                 <fieldset>
                     <legend>Значения Х</legend>
@@ -101,18 +101,9 @@
             <p>Приложение определяет, входят ли указанные пользователем точки в заданную
                 область.</p>
 
-            <!--&#45;&#45;<svg id="plot-svg" width="380" height="420">
-      <circle r="90" cx="190" cy="210" fill="rgb(51, 153, 255)"></circle>
-      <polygon points="190,210 190,30 370,210" fill="rgb(51, 153, 255)"></polygon>
-      <polygon points="190,210 190,390 370,390 370,210" fill="white"></polygon>
-      <polygon points="190,210 190,300 10,300 10,210" fill="rgb(51, 153, 255)"></polygon>
-      <line x1="190" x2="190" y1="0" y2="420" stroke="black" stroke-width="3"></line>
-      <line x1="0" x2="380" y1="210" y2="210" stroke="black" stroke-width="3"></line>
-      <text id="svg_text_r" x="200" y="240">R = 1</text>
-    </svg>&#45;&#45;-->
             <canvas id="canvas" onclick="onCanvasClick()"
-                    style="background-color:#ffffff; border-radius: 20px;" width="300"
-                    height="300"></canvas>
+                    style="background-color:#ffffff; border-radius: 20px;"
+                    width="300" height="300"></canvas>
         </td>
 
     </tr>

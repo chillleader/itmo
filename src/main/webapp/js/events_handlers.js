@@ -1,3 +1,5 @@
+var currentR = 1;
+
 function onFormSubmit() {
   let form = document.querySelector("#data-form");
 
@@ -61,4 +63,31 @@ function onFormSubmit() {
   }
 
   return valid;
-};
+}
+
+function onRadiusInput() {
+  let newR = document.querySelector("#data-form").r.value;
+  // alert(newR);
+  if (isNaN(newR) || newR === 0) {
+    return;
+  }
+
+  currentR = newR;
+  drawCanvas(currentR);
+}
+
+function onCanvasClick() {
+  var canvas = document.querySelector("#canvas");
+  var rect = canvas.getBoundingClientRect();
+
+  var left = rect.left;
+  var top = rect.top;
+  var event = window.event;
+
+  var x = event.clientX - left;
+  var y = event.clientY - top;
+
+  isArea(x, y, currentR, function (insideArea) {
+    drawPoint(x, y, insideArea);
+  });
+}

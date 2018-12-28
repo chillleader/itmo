@@ -1,18 +1,3 @@
-//--------------------------------------------------------------------
-
-var form = document.querySelector("#form-data");
-var currentR = 1;
-
-function onRadiusInput() {
-  let newR = form.r.value;
-  alert(newR);
-  if (isNaN(newR) || newR === 0) {
-    return;
-  }
-
-  drawCanvas(newR);
-}
-
 function drawCanvas(r) {
   let canvas = document.querySelector("#canvas");
   let context = canvas.getContext("2d");
@@ -101,26 +86,57 @@ function drawCanvas(r) {
   context.stroke();
 }
 
-function isArea(x, y, r) {
-  /*let points = [];
+function drawPoint(x, y, isArea) {
+  let canvas = document.querySelector("#canvas");
+  let context = canvas.getContext("2d");
 
+  context.beginPath();
+  context.rect(x - 2, y - 2, 4, 4);
+  context.closePath();
+  if (isArea) {
+    context.strokeStyle = "green";
+    context.fillStyle = "green";
+  } else {
+    context.strokeStyle = "red";
+    context.fillStyle = "red";
+  }
+
+  context.fill();
+  context.stroke();
+}
+
+function isArea(x, y, r, callback) {
+  return checkPoint(x, y, r, callback); // todo
+  // return checkPointLocally(x, y, r); // todo
+}
+
+// todo
+function checkPoint(x, y, r, callback) {
   let xmlHttpRequest = new XMLHttpRequest();
-  xmlHttpRequest.open("POST", "/", true);
+  xmlHttpRequest.open("POST", "?"
+      + "x=" + (r * ((x - 150) / 130))
+      + "&y=" + (r * ((150 - y) / 130))
+      + "&r=" + r
+      + "&redirect=false", true);
   xmlHttpRequest.setRequestHeader('Content-Type',
       'application/x-www-form-urlencoded');
-  let body = "x=" + x + "&y=" + y + "&r=" + r + "&redirect=false";
-  xmlHttpRequest.send(body);
-  xmlHttpRequest.onreadystatechange = function () {
-    if (xmlHttpRequest.readyState !== 4) {
-      return;
-    }
+  xmlHttpRequest.send();
 
-    if (xmlHttpRequest.status === 200) {
-      points = JSON.parse(xmlHttpRequest.responseText).points;
+  xmlHttpRequest.onreadystatechange = function () {
+    if (xmlHttpRequest.readyState === 4 && xmlHttpRequest.status === 200) {
+      console.log("Response: " + xmlHttpRequest.responseText);
+
+      let points = JSON.parse(xmlHttpRequest.responseText).points;
+      console.log("Points: " + points);
+
+      callback(points[points.length - 1].result);
+    } else {
+      callback(false);
     }
   };
+}
 
-  return points[points.length - 1].check;*/
+function checkPointLocally(x, y, r) {
   x = (x - 150) / 130;
   y = (150 - y) / 130;
 
@@ -143,91 +159,3 @@ function isArea(x, y, r) {
 
   return res;
 }
-
-function onCanvasClick() {
-  let canvas = document.querySelector("#canvas");
-  let rect = canvas.getBoundingClientRect();
-
-  let left = rect.left;
-  let top = rect.top;
-  // let event = window.event;
-
-  let x = event.clientX - left;
-  let y = event.clientY - top;
-  let boolArea = isArea(x, y, currentR);
-
-  drawPoint(x, y, boolArea);
-}
-
-function drawPoint(x, y, isArea) {
-  let canvas = document.querySelector("#canvas");
-  let context = canvas.getContext("2d");
-
-  context.beginPath();
-  context.rect(x - 2, y - 2, 4, 4);
-  context.closePath();
-  if (isArea) {
-    context.strokeStyle = "green";
-    context.fillStyle = "green";
-  } else {
-    context.strokeStyle = "red";
-    context.fillStyle = "red";
-  }
-
-  context.fill();
-  context.stroke();
-}
-
-function getPoints() {
-  let points = [];
-
-  let xmlHttpRequest = new XMLHttpRequest();
-  xmlHttpRequest.open("POST", "/", true);
-  xmlHttpRequest.setRequestHeader('Content-Type',
-      'application/x-www-form-urlencoded');
-  xmlHttpRequest.send();
-  xmlHttpRequest.onreadystatechange = function () {
-    if (xmlHttpRequest.readyState !== 4) {
-      return;
-    }
-
-    if (xmlHttpRequest.status === 200) {
-      points = JSON.parse(sessionStorage.getItem("points")).points;
-    }
-  };
-
-  return points;
-}
-
-/*
-var plot = document.querySelector("#plot-svg");
-var plotText = document.querySelector("#svg_text_r");
-
-var inputR = document.querySelector("input[name=\"r\"]");
-var form = document.querySelector("#data-form");
-
-plot.onclick =
-    function (event) {
-      let plotRect = plot.getBoundingClientRect();
-
-      let coordX = event.clientX - plotRect.left;
-      let coordY = event.clientY - plotRect.top;
-      console.log("coordX " + coordX + " coordY: " + coordY);
-
-      let r = document.querySelector("#data-form").r.value;
-      if (!(isNaN(r) || r === 0)) {
-        x = r * (coordX - 210) / 160;
-        y = r * (-(coordY - 190) / 160);
-        console.log("X " + x + " Y: " + y);
-
-        let element = document.createElement("circle");
-        element.setAttribute("name", "dot");
-        element.setAttribute("r", "2");
-        element.setAttribute("cx", coordX);
-        element.setAttribute("cy", coordY);
-        element.setAttribute("fill", isInsideOfArea(x, y, r) ? "green" : "red");
-
-        plot.appendChild(element);
-      }
-    };
- */

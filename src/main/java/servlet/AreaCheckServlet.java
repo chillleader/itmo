@@ -1,10 +1,12 @@
 package servlet;
 
+import static servlet.PointValidator.isValidPoint;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,83 +32,60 @@ public class AreaCheckServlet extends HttpServlet {
       + "  padding: 7px;\n"
       + "}";
 
-  private static final String JSP_HANDLER = "response.jsp";
+  private static final String TABLE_ROW_FORMAT =
+      "<tr>"
+          + "<td>%s</td>\n"
+          + "<td>%s</td>\n"
+          + "<td>%s</td>\n"
+          + "<td>%s</td>\n"
+          + "</tr>";
 
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws IOException, ServletException {
-    PrintWriter pw = resp.getWriter();
+      throws IOException {
     resp.setCharacterEncoding("UTF-8");
-    HttpSession session = req.getSession();
-    String[] xValues = req.getParameterValues("x");
-    String[] rValues = req.getParameterValues("r");
-    String[] yValues = req.getParameterValues("y");
 
-    List<Request> checkResults = new ArrayList<Request>();
+    PrintWriter pw = resp.getWriter();
+    HttpSession session = req.getSession();
+
+    String valueX = req.getParameter("x");
+    String valueY = req.getParameter("y");
+    String valueR = req.getParameter("r");
+
+    Request checkResult = null;
     List<Request> history;
-    List<Request> newHistory = new ArrayList<Request>();
+
     if (session.isNew() || session.getAttribute("history") == null) {
       history = new ArrayList<Request>();
     } else {
       history = (List<Request>) session.getAttribute("history");
     }
 
-    if (xValues == null && yValues == null && rValues == null) {
-      pw.println(parseJSON(history));
+    double x, y, r;
+    try {
+      x = Double.parseDouble(valueX);
+      y = Double.parseDouble(valueY);
+      r = Double.parseDouble(valueR);
+      boolean res = isValidPoint(x, y, r);
+
+      checkResult = new Request(x, y, r, res);
+
+      history.add(checkResult);
+    } catch (NumberFormatException e) {
+      session.setAttribute("correct", false);
+      pw.println("Incorrect input");
     }
 
-    double xi, yi, ri;
-
-    for (String x : xValues) {
-      for (String y : yValues) {
-        for (String r : rValues) {
-          try {
-            xi = Double.parseDouble(x);
-            yi = Double.parseDouble(y);
-            ri = Double.parseDouble(r);
-            boolean res = checkPoint(xi, yi, ri);
-            checkResults.add(new Request(xi, yi, ri, res));
-            newHistory.add(new Request(xi, yi, ri, res));
-          } catch (NumberFormatException e) {
-            session.setAttribute("correct", false);
-            pw.println("Incorrect input");
-          }
-        }
-      }
-    }
-
-    req.setAttribute("results", checkResults);
     req.setAttribute("history", history);
+    session.setAttribute("history", history);
 
     session.setAttribute("correct", true);
-    history.addAll(newHistory);
-    session.setAttribute("history", history);
-    session.setAttribute("current", checkResults);
-    checkResults.addAll(history);
+    session.setAttribute("current", checkResult);
 
     if (req.getParameter("redirect") == null || Boolean.valueOf(req.getParameter("redirect"))) {
-      createAndSendPage(newHistory, req, resp);
+      createAndSendPage(history, req, resp);
     } else {
-      resp.getWriter().print(parseJSON(checkResults));
+      resp.getWriter().print(parseJSON(Collections.singletonList(checkResult)));
     }
-  }
-
-  private boolean checkPoint(double x, double y, double r) {
-    if (r < 0) {
-      return false;
-    }
-    boolean res;
-    if (x <= 0 && y <= 0) {
-      res = (x >= -r && y >= -r / 2);
-    } else if (x < 0) {
-      if (Math.abs(x) > r || Math.abs(y) > r) {
-        res = false;
-      } else {
-        res = (Math.sqrt(x * x + y * y) <= r);
-      }
-    } else {
-      res = (y <= -x + r && y >= 0);
-    }
-    return res;
   }
 
   private void createAndSendPage(List<Request> resultPoint, HttpServletRequest req,
@@ -126,17 +105,17 @@ public class AreaCheckServlet extends HttpServlet {
     writer.append("</tr>");
     if (resultPoint != null) {
       for (Request request : resultPoint) {
-        writer.append("<tr>");
-        writer.append("<td>").append(String.valueOf(request.x)).append("</td>");
-        writer.append("<td>").append(String.valueOf(request.y)).append("</td>");
-        writer.append("<td>").append(String.valueOf(request.r)).append("</td>");
-        writer.append("<td>").append(String.valueOf(request.check)).append("</td>");
-        writer.append("</tr>");
+        writer.append(
+            String.format(TABLE_ROW_FORMAT,
+                request.x, request.y, request.r, request.check
+            )
+        );
       }
     }
     writer.append("</table>");
-    writer.append("<a href=\"" + req.getContextPath()
-        + "\" style=\"position: absolute; right: 10%; bottom: 10%;\">Вернуться</a>");
+    writer.append("<a href=\"")
+        .append(req.getContextPath())
+        .append("\" style=\"position: absolute; right: 10%; bottom: 10%;\">Вернуться</a>");
     writer.append("</body></html>");
 
   }

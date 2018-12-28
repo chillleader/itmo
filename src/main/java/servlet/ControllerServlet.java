@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,8 +23,9 @@ public class ControllerServlet extends HttpServlet {
       throws ServletException, IOException {
     req.setCharacterEncoding("UTF-8");
     resp.setCharacterEncoding("UTF-8");
+
     Enumeration<String> params = req.getParameterNames();
-    PrintWriter pw = resp.getWriter();
+
     boolean hasX = false;
     boolean hasY = false;
     boolean hasR = false;
@@ -39,11 +39,12 @@ public class ControllerServlet extends HttpServlet {
         hasR = true;
       }
     }
+
     if (hasX && hasY && hasR) {
       RequestDispatcher rd = req.getRequestDispatcher("check");
       rd.forward(req, resp);
     } else {
-      pw.println("Wrong");
+      resp.getWriter().println("Wrong");
     }
   }
 }
