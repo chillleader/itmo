@@ -36,9 +36,11 @@ public class VerdictDao implements VerdictDaoInterface{
 
   @Override
   public void removeAll() {
-    String stringQuery = "DELETE FROM Verdict";
-    Query query = HibernateSessionFactory.getSessionFactory().openSession().
-        createSQLQuery("DELETE FROM verdicts");
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Transaction tx1 = session.beginTransaction();
+    Query query = session.createQuery("DELETE FROM Verdict ");
     query.executeUpdate();
+    tx1.commit();
+    session.close();
   }
 }

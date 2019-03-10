@@ -1,6 +1,7 @@
 package ru.bepis.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ import lombok.ToString;
 public class UserCredentials {
 
   @Id
+  @Column(name = "username",unique=true, nullable = false)
   private String username;
   private String password;
 

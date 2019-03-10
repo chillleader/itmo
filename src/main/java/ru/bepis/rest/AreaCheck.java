@@ -27,9 +27,9 @@ public class AreaCheck {
   @Secured
   @Produces(MediaType.APPLICATION_JSON)
   public Response checkPoint(
-      @FormParam("x") String x,
-      @FormParam("y") String y,
-      @FormParam("r") String r) {
+      @QueryParam("x") String x,
+      @QueryParam("y") String y,
+      @QueryParam("r") String r) {
 
     double xd = Double.parseDouble(x);
     double yd = Double.parseDouble(y);
@@ -40,19 +40,26 @@ public class AreaCheck {
     response.append("r", r);
     String verdict = "false";
 
-    if (xd < 0 && yd >= 0) verdict = "false";
+    if (xd < 0 && yd > 0) verdict = "false";
     else if (xd >= 0 && yd >= 0) {
       if (xd <= rd / 2 && yd <= rd) verdict = "true";
       else verdict = "false";
-    } else if (xd >= 0 && yd < 0) {
-
+    } else if (xd > 0 && yd < 0) {
+      if (yd >= xd - rd / 2) verdict = "true";
+      else verdict = "false";
     } else {
-      //todo implement behaviour
+      if (xd >= -Math.sqrt(rd * rd - yd * yd)) verdict = "true";
+      else verdict = "false";
     }
     Verdict verd = new Verdict(xd, yd, rd, verdict.equals("true"));
-    verdictDao.add(verd);
-    response.append("verdict", verdict);
-    return Response.ok(response.toString()).build();
+    try {
+      verdictDao.add(verd);
+      response.append("verdict", verdict);
+      return Response.ok(response.toString()).build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return Response.status(503).build();
+    }
   }
 
   @GET
@@ -76,7 +83,7 @@ public class AreaCheck {
       return Response.ok(resp.toString()).build();
     } catch (Exception e) {
       e.printStackTrace();
-      return Response.status(500).build();
+      return Response.status(503).build();
     }
   }
 
@@ -88,7 +95,7 @@ public class AreaCheck {
       return Response.ok().build();
     } catch (Exception e) {
       e.printStackTrace();
-      return Response.status(500).build();
+      return Response.status(503).build();
     }
   }
 }

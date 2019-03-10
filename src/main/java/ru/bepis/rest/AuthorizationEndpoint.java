@@ -41,18 +41,22 @@ public class AuthorizationEndpoint {
 
     } catch (Exception e) {
       e.printStackTrace();
-      return Response.ok().build();
+      return Response.status(503).build();
     }
   }
 
   private void authenticate(String username, String password) throws Exception {
-    UserCredentials user = userDao.findByUsername(username);
-    if (!user.getPassword().equals(password)) throw new Exception("Authorization failure");
+    try {
+      UserCredentials user = userDao.findByUsername(username);
+      if (!user.getPassword().equals(password)) throw new Exception("Authorization failure");
+    } catch (Exception e) {
+      UserCredentials user = new UserCredentials(username, password);
+      userDao.save(user);
+    }
   }
 
   private String issueToken(String username) {
-    LocalDate localDate = LocalDate.now();
-    String token = localDate.toString() + username;
+    String token = username;
     Calendar date = Calendar.getInstance();
     long t = date.getTimeInMillis();
     Date expiry = new Date(t + 10 * 60000);
