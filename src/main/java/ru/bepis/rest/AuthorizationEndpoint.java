@@ -16,6 +16,7 @@ import ru.bepis.dao.UserCredentialsDao;
 import ru.bepis.dao.UserCredentialsDaoInterface;
 import ru.bepis.model.Token;
 import ru.bepis.model.UserCredentials;
+import ru.bepis.util.CORS;
 
 @Path("/authorize")
 public class AuthorizationEndpoint {
@@ -25,6 +26,7 @@ public class AuthorizationEndpoint {
 
   @Produces(MediaType.APPLICATION_JSON)
   @GET
+  @CORS
   public Response authenticateUser(@QueryParam("user") String username,
       @QueryParam("password_sha256") String password) {
 
@@ -39,7 +41,10 @@ public class AuthorizationEndpoint {
       // Return the token on the response
       return Response.ok(response.toString()).build();
 
-    } catch (Exception e) {
+    } catch (IllegalAccessException e) {
+      return Response.ok().build();
+    }
+    catch (Exception e) {
       e.printStackTrace();
       return Response.status(503).build();
     }
@@ -48,7 +53,7 @@ public class AuthorizationEndpoint {
   private void authenticate(String username, String password) throws Exception {
     try {
       UserCredentials user = userDao.findByUsername(username);
-      if (!user.getPassword().equals(password)) throw new Exception("Authorization failure");
+      if (!user.getPassword().equals(password)) throw new IllegalAccessException("Authorization failure");
     } catch (Exception e) {
       UserCredentials user = new UserCredentials(username, password);
       userDao.save(user);

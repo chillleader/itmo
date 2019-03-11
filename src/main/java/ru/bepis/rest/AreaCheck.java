@@ -5,6 +5,7 @@ import javax.ejb.EJB;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.bepis.dao.VerdictDaoInterface;
 import ru.bepis.model.Verdict;
+import ru.bepis.util.CORS;
 import ru.bepis.util.Secured;
 
 @Path("/verdicts")
@@ -25,6 +27,7 @@ public class AreaCheck {
 
   @POST
   @Secured
+  @CORS
   @Produces(MediaType.APPLICATION_JSON)
   public Response checkPoint(
       @QueryParam("x") String x,
@@ -64,6 +67,7 @@ public class AreaCheck {
 
   @GET
   @Secured
+  @CORS
   @Produces(MediaType.APPLICATION_JSON)
   public Response getAllVerdicts() {
     try {
@@ -89,6 +93,7 @@ public class AreaCheck {
 
   @DELETE
   @Secured
+  @CORS
   public Response clearDatabase() {
     try {
       verdictDao.removeAll();
@@ -97,5 +102,11 @@ public class AreaCheck {
       e.printStackTrace();
       return Response.status(503).build();
     }
+  }
+
+  @CORS
+  @OPTIONS
+  public Response options() {
+    return Response.ok().header("Allow", "OPTIONS, GET, POST").build();
   }
 }
