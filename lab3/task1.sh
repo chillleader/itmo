@@ -8,7 +8,7 @@ echo Run at `date` 1>&2
 
 # Get ACL rights entry for user
 # args: file, uid
-# output: rights set in format [r\-][w\-][x\-] (example: r-x)
+# output: octal number with user's rights for file
 get_acl_rights_entry() {
   FILE=$1
   USER_ID=$2
