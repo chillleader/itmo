@@ -85,14 +85,12 @@ int main(int argc, char *argv[]) {
         command = argv[1];
     }
 
-    int read_line_code = !EOF;
+	
+	int read_line_code = read_line(&in_buf, STDIN_FILENO);
 
-    while (1) {
-        read_line_code = read_line(&in_buf, STDIN_FILENO);
-
-        if (read_line_code == EOF) {
-            break;
-        } else if (read_line_code < 0) {
+    while (read_line_code != EOF) {
+        
+		if (read_line_code < 0) {
             handle_errno();
         }
 
@@ -100,14 +98,16 @@ int main(int argc, char *argv[]) {
             char *concat_buf = malloc((strlen(command) + strlen(in_buf) + 1) * sizeof(char));
 
             sprintf(concat_buf, "%s %s", command, in_buf);
+			free(concat_buf);
             if (system(concat_buf) < 0) {
                 handle_errno();
             }
         } else {
             write_line(in_buf, STDOUT_FILENO);
         }
+		read_line_code = read_line(&in_buf, STDIN_FILENO);
     }
-
+	
     return EXIT_SUCCESS;
 }
 
