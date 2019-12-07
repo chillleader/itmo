@@ -68,3 +68,4 @@ task10: task10.o
 clean:
 	rm -f *.o task{1..10}{_client,_server,''}
 	rm -f lib/*.o
+	
