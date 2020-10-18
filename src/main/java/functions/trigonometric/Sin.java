@@ -1,0 +1,25 @@
+package functions.trigonometric;
+
+import functions.Function;
+
+public class Sin extends Function {
+
+    private static final int MAX_N = 50;
+
+    @Override
+    public double value(double x) {
+        // convert x to an angle between -2 PI and 2 PI
+        x = x % (2 * Math.PI);
+
+        // compute the Taylor series approximation
+        double term = 1.0;      // ith term = x^i / i!
+        double sum  = 0.0;      // sum of first i terms in taylor series
+
+        for (int i = 1; term != 0.0; i++) {
+            term *= (x / i);
+            if (i % 4 == 1) sum += term;
+            if (i % 4 == 3) sum -= term;
+        }
+        return sum;
+    }
+}
