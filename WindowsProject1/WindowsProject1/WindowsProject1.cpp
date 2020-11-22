@@ -26,8 +26,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Place code here.
-
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_WINDOWSPROJECT1, szWindowClass, MAX_LOADSTRING);
@@ -146,16 +144,45 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            auto oldBrush = SelectObject(hdc, GetStockObject(BLACK_BRUSH));
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hWnd, &ps);
+		// TODO: Add any drawing code that uses hdc here...
+		double factor = (2.0f * 3.1416f) / 360.0f;
+		double rot = 10.0f * factor;
 
-            Rectangle(hdc, 40, 25, 80, 300);
-            Rectangle(hdc, 245, 25, 285, 300);
-			Rectangle(hdc, 40, 25, 285, 65);
 
-            SelectObject(hdc, oldBrush);
-            EndPaint(hWnd, &ps);
+		// Create a matrix for the transform we want (read the docs for details)
+		XFORM xfm = { 0.0f };
+		XFORM oldXfm = { 0.0f };
+
+		xfm.eM11 = (float)cos(rot);
+		xfm.eM12 = (float)sin(rot);
+		xfm.eM21 = (float)-sin(rot);
+		xfm.eM22 = (float)cos(rot);
+		float x0 = 265;
+		float y0 = 348;
+		xfm.eDx = x0 - cos(rot) * x0 + sin(rot) * y0;
+		xfm.eDy = y0 - cos(rot) * y0 - sin(rot) * x0;
+
+		auto oldBrush = SelectObject(hdc, GetStockObject(BLACK_BRUSH));
+
+		auto oldMode = SetGraphicsMode(hdc, GM_ADVANCED);
+		GetWorldTransform(hdc, &oldXfm);
+		SetWorldTransform(hdc, &xfm);    // Tell Windows to use that transform matrix
+
+		Rectangle(hdc, 150, 145, 180, 320);
+		Rectangle(hdc, 250, 125, 280, 300);
+		
+
+		SetWorldTransform(hdc, &oldXfm);
+
+		SetGraphicsMode(hdc, oldMode);
+
+		Rectangle(hdc, 185, 125, 315, 160);
+		Rectangle(hdc, 315, 135, 320, 125);
+
+		SelectObject(hdc, oldBrush);
+		EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:
