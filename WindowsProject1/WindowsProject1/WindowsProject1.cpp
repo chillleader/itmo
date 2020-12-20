@@ -146,6 +146,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
+
 		// TODO: Add any drawing code that uses hdc here...
 		double factor = (2.0f * 3.1416f) / 360.0f;
 		double rot = 10.0f * factor;
@@ -167,19 +168,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		auto oldBrush = SelectObject(hdc, GetStockObject(BLACK_BRUSH));
 
 		auto oldMode = SetGraphicsMode(hdc, GM_ADVANCED);
+
+		SelectObject(hdc, GetStockObject(DC_BRUSH));
+		SetDCBrushColor(hdc, RGB(34, 139, 34));
+		Ellipse(hdc, 70, 50, 410, 390);
+
 		GetWorldTransform(hdc, &oldXfm);
 		SetWorldTransform(hdc, &xfm);    // Tell Windows to use that transform matrix
 
-		Rectangle(hdc, 150, 145, 180, 320);
+		SetDCBrushColor(hdc, RGB(0, 0, 0));
+
+		Rectangle(hdc, 145, 145, 175, 320);
 		Rectangle(hdc, 250, 125, 280, 300);
-		
+		Ellipse(hdc, 145, 315, 175, 330);
+		Ellipse(hdc, 250, 295, 280, 310);
 
 		SetWorldTransform(hdc, &oldXfm);
 
 		SetGraphicsMode(hdc, oldMode);
 
-		Rectangle(hdc, 185, 125, 315, 160);
-		Rectangle(hdc, 315, 135, 320, 125);
+		Rectangle(hdc, 190, 120, 310, 155);
+		Ellipse(hdc, 183, 120, 210, 130);
+		Ellipse(hdc, 295, 120, 317, 137);
 
 		SelectObject(hdc, oldBrush);
 		EndPaint(hWnd, &ps);
