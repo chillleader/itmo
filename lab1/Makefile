@@ -1,5 +1,5 @@
-obj-m += proc_example.o
-proc_example-objs := ./src/file_handlers.o ./src/calculator.o ./src/proc_example.o
+obj-m += char_dev.o
+char_dev-objs := ./src/file_handlers.o ./src/calculator.o ./src/char_dev.o
 
 all:
 	make -C /lib/modules/`uname -r`/build M=$(PWD) modules

@@ -15,7 +15,7 @@
 
 #define BUFFSIZE 100
 
-extern char buffer[];
+extern char buffer[]; //TODO: allocate buffer dynamically
 
 extern int buffer_ptr;
 

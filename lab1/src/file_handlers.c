@@ -45,7 +45,7 @@ int dev_close(struct inode *i, struct file *f)
 
 ssize_t dev_read(struct file *f, char __user *buf, size_t len, loff_t *off)
 {
-  printk(KERN_INFO "Driver: read()\n");
+  printk(KERN_INFO "%s\n", buffer);
   return 0;
 }
 

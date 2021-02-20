@@ -46,14 +46,14 @@ static int __init ch_drv_init(void)
 		unregister_chrdev_region(first, 1);
 		return -1;
 	  }
-    if (device_create(cl, NULL, first, NULL, "mychdev") == NULL)
+    if (device_create(cl, NULL, first, NULL, "var2") == NULL)
 	  {
 		class_destroy(cl);
 		unregister_chrdev_region(first, 1);
 		return -1;
 	  }
     cdev_init(&c_dev, &mychdev_fops);
-	  ent=proc_create("var2",0660,NULL,&proc_fops);
+	  ent = proc_create("var2", 0660, NULL, &proc_fops);
 
     if (cdev_add(&c_dev, first, 1) == -1)
 	  {
