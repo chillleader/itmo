@@ -1,15 +1,15 @@
 #include "file_handlers.h"
+#include "calculator.h"
+
 #define BUFSIZE  100
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Bepis team");
 MODULE_DESCRIPTION("Lab 1 Kernel Module");
 
-static int irq=20;
-module_param(irq,int,0660);
- 
-static int mode=1;
-module_param(mode,int,0660);
+struct proc_dir_entry *ent;
+
+struct cdev c_dev; 
 
 ssize_t proc_read(struct file *f, char __user *ubuf, size_t count, loff_t *ppos)
 {
@@ -18,8 +18,7 @@ ssize_t proc_read(struct file *f, char __user *ubuf, size_t count, loff_t *ppos)
   printk(KERN_INFO "Read from proc\n");
   if(*ppos > 0 || count < BUFSIZE)
   	return 0;
-  len += sprintf(buf,"irq = %d\n",irq);
-  len += sprintf(buf + len,"mode = %d\n",mode);
+  len += sprintf(buf,"%s\n",buffer);
   if(copy_to_user(ubuf,buf,len))
   	return -EFAULT;
   *ppos = len;
@@ -53,5 +52,6 @@ ssize_t dev_read(struct file *f, char __user *buf, size_t len, loff_t *off)
 ssize_t dev_write(struct file *f, const char __user *buf,  size_t len, loff_t *off)
 {
   printk(KERN_INFO "Driver: write()\n");
+  parse(buf, len);
   return len;
 }

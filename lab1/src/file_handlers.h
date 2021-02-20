@@ -9,26 +9,29 @@
 #include <linux/device.h>
 #include <linux/cdev.h>
 #include <linux/proc_fs.h>
+#include <linux/uaccess.h>
+#include <linux/moduleparam.h>
+#include <linux/init.h>
 
-static struct proc_dir_entry *ent;
+extern struct proc_dir_entry *ent;
 
-static struct cdev c_dev; 
+extern struct cdev c_dev; 
 
 
-static int proc_open(struct inode *i, struct file *f);
+int proc_open(struct inode *i, struct file *f);
 
-static int proc_close(struct inode *i, struct file *f);
+int proc_close(struct inode *i, struct file *f);
 
-static ssize_t proc_read(struct file *f, char __user *buf, size_t len, loff_t *off);
+ssize_t proc_read(struct file *f, char __user *buf, size_t len, loff_t *off);
 
-static ssize_t proc_write(struct file *f, const char __user *buf,  size_t len, loff_t *off);
+ssize_t proc_write(struct file *f, const char __user *buf,  size_t len, loff_t *off);
 
-static int dev_open(struct inode *i, struct file *f);
+int dev_open(struct inode *i, struct file *f);
 
-static int dev_close(struct inode *i, struct file *f);
+int dev_close(struct inode *i, struct file *f);
 
-static ssize_t dev_read(struct file *f, char __user *buf, size_t len, loff_t *off);
+ssize_t dev_read(struct file *f, char __user *buf, size_t len, loff_t *off);
 
-static ssize_t dev_write(struct file *f, const char __user *buf,  size_t len, loff_t *off);
+ssize_t dev_write(struct file *f, const char __user *buf,  size_t len, loff_t *off);
 
 #endif

@@ -53,7 +53,7 @@ static int __init ch_drv_init(void)
 		return -1;
 	  }
     cdev_init(&c_dev, &mychdev_fops);
-	ent=proc_create("var2",0660,NULL,&proc_fops);
+	  ent=proc_create("var2",0660,NULL,&proc_fops);
 
     if (cdev_add(&c_dev, first, 1) == -1)
 	  {
