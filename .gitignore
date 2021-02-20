@@ -1,0 +1,14 @@
+#files being edited
+*~
+
+# make and build files
+*.lst
+*.o
+*.eep
+*.lss
+*.map
+*.sym
+*.ko
+*.cmd
+*.make
+*.json
