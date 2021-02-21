@@ -17,8 +17,13 @@ char divide = '/';
 void calc_init()
 {
     buffer = (char*) kmalloc(BUFFSIZE * sizeof(char), GFP_KERNEL);
-    buffer_ptr = 0;
-    printk(KERN_INFO "Driver: Successfully allocated result buffer of size %d\n", BUFFSIZE);
+    if (buffer)
+    {
+        buffer_ptr = 0;
+        printk(KERN_INFO "Driver: Successfully allocated result buffer of size %d\n", BUFFSIZE);
+        return;
+    }
+    printk(KERN_ERR "Driver: Failed to allocate result buffer %d\n", BUFFSIZE);
 }
 
 void store(char* result, size_t len)
