@@ -4,17 +4,39 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Bepis team");
 MODULE_DESCRIPTION("Lab 1 Kernel Module");
 
-char buffer[BUFFSIZE];
+char *buffer;
 //module_param(buffer,char,0660);
 
-int buffer_ptr = 0;
+size_t buffer_ptr = 0;
 
 char plus = '+';
 char minus = '-';
 char multiply = '*';
 char divide = '/';
 
-void parse(char *string, int len)
+void calc_init()
+{
+    buffer = (char*) kmalloc(BUFFSIZE * sizeof(char), GFP_KERNEL);
+    buffer_ptr = 0;
+    printk(KERN_INFO "Driver: Successfully allocated result buffer of size %d\n", BUFFSIZE);
+}
+
+void store(char* result, size_t len)
+{
+    if (len > BUFFSIZE - buffer_ptr)
+    {
+        printk(KERN_INFO "Driver: Result buffer is full, dumping it to kernel log to avoid overflow\n");
+        printk(KERN_INFO "%s\n", buffer);
+
+        kfree(buffer);
+        calc_init();
+    }
+
+    buffer_ptr += (sprintf(buffer + buffer_ptr,"%s\n", result));
+}
+
+//TODO: function is broken, fix it
+void parse(const char *string, int len)
 {
     int i;
     int sign_index;
@@ -68,8 +90,9 @@ void parse(char *string, int len)
         result = fist_operand / second_operand;
         break;
     }
-    
-    buffer_ptr += (sprintf(buffer + buffer_ptr,"%d\n", result));
 
-    return result;
+
+    char str[20];
+    sprintf(str, "%d", result);
+    store(str, strlen(str));
 }

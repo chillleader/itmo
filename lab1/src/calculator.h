@@ -2,6 +2,7 @@
 #define CALCULATOR
 #include <linux/module.h>
 #include <linux/version.h>
+#include <linux/slab.h>
 #include <linux/kernel.h>
 #include <linux/types.h>
 #include <linux/kdev_t.h>
@@ -15,10 +16,11 @@
 
 #define BUFFSIZE 100
 
-extern char buffer[]; //TODO: allocate buffer dynamically
+extern char *buffer;
+extern size_t buffer_ptr;
 
-extern int buffer_ptr;
+void calc_init(void);
 
-void parse(char * string, int len);
+void parse(const char * string, int len);
 
 #endif

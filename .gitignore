@@ -12,3 +12,7 @@
 *.cmd
 *.make
 *.json
+*.mk
+*.order
+*.symvers
+*.mod
