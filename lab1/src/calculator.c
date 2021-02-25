@@ -40,62 +40,46 @@ void store(char* result, size_t len)
     buffer_ptr += (sprintf(buffer + buffer_ptr,"%s\n", result));
 }
 
-//TODO: function is broken, fix it
 void parse(const char *string, int len)
 {
-    int i;
-    int sign_index;
-    int sign;
-    int fist_operand = 0;
-    int second_operand = 0;
-    int result;
-    for (i = 0; i < len; i++)
+    int first = 0, second = 0;
+    int operator_index = 0;
+    int result = 0;
+
+    int i = 0;
+    while(!(string[i] == plus 
+        || string[i] == minus 
+        || string[i] == multiply 
+        || string[i] == divide))
     {
-        if (string[i] == plus || string[i] == minus || string[i] == multiply || string[i] == divide)
-        {
-            sign_index = i;
-        }
-        if (string[i] == plus)
-        {
-            sign = 0;
-        }
-        else if (string[i] == minus)
-        {
-            sign = 1;
-        }
-        else if (string[i] == multiply)
-        {
-            sign = 3;
-        }
-        else if (string[i] == divide)
-        {
-            sign = 4;
-        }
-    }
-    for (i = 0; i < sign_index; i++)
-    {
-        fist_operand += 10 * i + (int)string[i];
-    }
-    for (i = sign_index + 1; i < len; i++)
-    {
-        second_operand += 10 * i + (int)string[i];
-    }
-    switch (sign)
-    {
-    case 0:
-        result = fist_operand + second_operand;
-        break;
-    case 1:
-        result = fist_operand - second_operand;
-        break;
-    case 2:
-        result = fist_operand * second_operand;
-        break;
-    case 3:
-        result = fist_operand / second_operand;
-        break;
+        first = first*10 + (string[i]-48);
+        i++;
     }
 
+    operator_index = i;
+    i++;
+    
+    for (; i < len-1; ++i) 
+    {
+        second = second*10 + (string[i]-48);
+    }
+    
+
+    if (string[operator_index] == plus)
+    {
+        result = first + second;
+    }
+    else if (string[operator_index] == minus)
+    {
+     result = first - second;
+    }
+    else if (string[operator_index] == multiply)
+    {
+       result = first * second;
+    }
+    else if (string[operator_index] == divide){
+        result = first / second;
+    }
 
     char str[20];
     sprintf(str, "%d", result);
