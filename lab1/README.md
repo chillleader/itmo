@@ -37,5 +37,15 @@ sudo -i
 ```
 
 ## Примеры использования
+```shell
+echo >/dev/var2 5+11
+cat /proc/var2
+16
+```
+```shell
+echo >/dev/var2 5-6
+cat /proc/var2
+16
+-1
+```
 
-...
