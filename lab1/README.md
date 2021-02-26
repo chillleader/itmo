@@ -36,6 +36,9 @@ cat /proc/var2
 sudo -i
 ```
 
+Кроме того, драйвер предоставляет переименовать используемый proc-файл во время работы.
+Для этого нужно вывести в /dev/var2 команду вида @new_file_name, где после символа @ следует новое имя proc-файла.
+
 ## Примеры использования
 ```shell
 echo >/dev/var2 5+11
@@ -48,4 +51,11 @@ cat /proc/var2
 16
 -1
 ```
-
+```shell
+echo >/dev/var2 @newfile
+cat /proc/var2
+cat: /proc/var2: No such file or directory
+cat /proc/newfile
+16
+-1
+```
