@@ -17,7 +17,6 @@ extern struct proc_dir_entry *ent;
 
 extern struct cdev c_dev; 
 
-
 int proc_open(struct inode *i, struct file *f);
 
 int proc_close(struct inode *i, struct file *f);
@@ -33,5 +32,10 @@ int dev_close(struct inode *i, struct file *f);
 ssize_t dev_read(struct file *f, char __user *buf, size_t len, loff_t *off);
 
 ssize_t dev_write(struct file *f, const char __user *buf,  size_t len, loff_t *off);
+
+void create_proc_file(char* filename);
+
+extern struct file_operations mychdev_fops;
+extern struct file_operations proc_fops;
 
 #endif

@@ -20,20 +20,7 @@ MODULE_DESCRIPTION("The first kernel module");
 static dev_t first;
 static struct class *cl;
 
-static struct file_operations mychdev_fops =
-	{
-		.owner = THIS_MODULE,
-		.open = dev_open,
-		.release = dev_close,
-		.read = dev_read,
-		.write = dev_write
-	};
 
-static struct file_operations proc_fops =
-	{
-		.owner = THIS_MODULE,
-		.read = proc_read
-	};
 
 static int __init ch_drv_init(void)
 {
@@ -57,7 +44,7 @@ static int __init ch_drv_init(void)
 	}
 
 	cdev_init(&c_dev, &mychdev_fops);
-	ent = proc_create("var2", 0660, NULL, &proc_fops);
+	create_proc_file("var2");
 
 	if (cdev_add(&c_dev, first, 1) == -1)
 	{
@@ -66,7 +53,7 @@ static int __init ch_drv_init(void)
 		unregister_chrdev_region(first, 1);
 		return -1;
 	}
-	
+
 	calc_init();
 	return 0;
 }

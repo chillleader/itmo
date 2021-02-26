@@ -1,4 +1,5 @@
 #include "calculator.h"
+#include "file_handlers.h"
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Bepis team");
@@ -13,6 +14,18 @@ char plus = '+';
 char minus = '-';
 char multiply = '*';
 char divide = '/';
+
+int check_rename_command(char* command, int len)
+{
+    if (len > 1 && command[0] == '@') {
+        char buf[50];
+        strncpy(buf, &command[1], len - 2);
+        buf[len - 2] = '\0';
+        create_proc_file(buf);
+        return 1;
+    }
+    return 0;
+}
 
 void calc_init()
 {
@@ -42,6 +55,9 @@ void store(char* result, size_t len)
 
 void parse(const char *string, int len)
 {
+
+    if (check_rename_command(string, len)) return;
+
     int first = 0, second = 0;
     int operator_index = 0;
     int result = 0;
