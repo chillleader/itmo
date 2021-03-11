@@ -43,8 +43,9 @@ rmmode main.ko
 fdisk -l /dev/mydisk # Вывод информации о диске и разделах
 lsblk # Вывод списка подключенных блочных устройств
 ```
-![](fdisk.png)
-![](lsblk.png)
+![](img/fdisk.png)
+
+На скриншоте представлен вывод команды fdisk.
 
 Отформатировать разделы диска можно с помощью команды mkfs.vfat:
 ```shell
@@ -52,3 +53,16 @@ mkfs.vfat /dev/mydisk1
 mkfs.vfat /dev/mydisk2
 ```
 
+Замерить скорость передачи данных можно следующей командой:
+```shell
+dd if=/dev/mydisk2 of=/dev/mydisk1 # между разделами виртуального диска
+dd if=/dev/sda of=/dev/mydisk1 # между физическим и виртуальным дисками
+```
+Результаты измерений скорости передачи данных представлены в таблице ниже.
+
+| Measurement №| Move between virtual partitions  | Move from physical disk to virtual |
+|--------------|----------------------------------|------------------------------------|
+| 1            | 39,6 MB/s                        | 64,6 MB/s                          |
+| 2            | 68,6 MB/s                        | 59,2 MB/s                          |
+| 3            | 33,6 MB/s                        | 76,7 MB/s                          |
+| Average      | 47,3 MB/s                        | 66.8 MB/s                          |
