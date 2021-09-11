@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<humans>
+    <human>
+        <male>true</male>
+        <name>Малыш </name>
+        <referName>Малыша </referName>
+        <size>81.13675291074247</size>
+        <temper>0.5</temper>
+    </human>
+    <human>
+        <male>false</male>
+        <name>Фрекен Бок </name>
+        <referName>Фрекен Бок </referName>
+        <size>80.6031272330373</size>
+        <temper>0.5</temper>
+    </human>
+    <human>
+        <male>true</male>
+        <name>вфыаф </name>
+        <referName>Дядю Юлиуса </referName>
+        <size>0.5933702993370149</size>
+        <temper>0.5</temper>
+    </human>
+    <human>
+        <male>true</male>
+        <name>лпьдрпьр </name>
+        <referName>Карлсона </referName>
+        <size>35.25036719110696</size>
+        <temper>0.5</temper>
+    </human>
+</humans>

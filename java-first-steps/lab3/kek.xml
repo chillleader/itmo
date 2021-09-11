@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<humans>
+    <human>
+        <color>red</color>
+        <dateTimeString>2018-06-07 03:48</dateTimeString>
+        <male>true</male>
+        <name>KEK</name>
+        <size>100.0</size>
+        <x>15.0</x>
+        <y>15.0</y>
+    </human>
+    <human>
+        <color>yellow</color>
+        <dateTimeString>2018-06-07 03:41</dateTimeString>
+        <male>true</male>
+        <name>Рофл </name>
+        <referName>Малыша </referName>
+        <size>70.0</size>
+        <x>50.0</x>
+        <y>30.0</y>
+    </human>
+    <human>
+        <color>red</color>
+        <dateTimeString>2018-06-07 03:41</dateTimeString>
+        <male>true</male>
+        <name>Малыш </name>
+        <referName>Малыша </referName>
+        <size>60.0</size>
+        <x>50.0</x>
+        <y>50.0</y>
+    </human>
+    <human>
+        <color>blue</color>
+        <dateTimeString>2018-06-07 03:41</dateTimeString>
+        <male>true</male>
+        <name>лпьдрпьр </name>
+        <referName>Карлсона </referName>
+        <size>35.25036719110696</size>
+        <x>70.0</x>
+        <y>70.0</y>
+    </human>
+    <human>
+        <color>purple</color>
+        <dateTimeString>2018-06-07 03:41</dateTimeString>
+        <male>false</male>
+        <name>Фрекен Бок </name>
+        <referName>Фрекен Бок </referName>
+        <size>80.6031272330373</size>
+        <x>70.0</x>
+        <y>30.0</y>
+    </human>
+    <human>
+        <color>green</color>
+        <dateTimeString>2018-06-07 03:41</dateTimeString>
+        <male>true</male>
+        <name>вфыаф </name>
+        <referName>Дядю Юлиуса </referName>
+        <size>30.0</size>
+        <x>10.0</x>
+        <y>10.0</y>
+    </human>
+    <human>
+        <color>red</color>
+        <dateTimeString>2018-06-07 03:41</dateTimeString>
+        <male>false</male>
+        <name>Персонаж_ка</name>
+        <size>40.0</size>
+        <x>90.0</x>
+        <y>90.0</y>
+    </human>
+</humans>
