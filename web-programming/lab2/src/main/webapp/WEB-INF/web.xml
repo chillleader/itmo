@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0">
+
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <page-encoding>UTF-8</page-encoding>
+    </jsp-property-group>
+  </jsp-config>
+
+  <servlet>
+    <servlet-name>ControllerServlet</servlet-name>
+    <servlet-class>servlet.ControllerServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AreaCheckServlet</servlet-name>
+    <servlet-class>servlet.AreaCheckServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ControllerServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AreaCheckServlet</servlet-name>
+    <url-pattern>/check</url-pattern>
+  </servlet-mapping>
+
+  <!--<filter>
+    <filter-name>ValidationFilter</filter-name>
+    <filter-class>servlet.ValidationFilter</filter-class>
+    <init-param>
+      <param-name>active</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>-->
+
+  <!--<filter-mapping>
+    <filter-name>ValidationFilter</filter-name>
+    <servlet-name>ControllerServlet</servlet-name>
+  </filter-mapping>-->
+</web-app>
