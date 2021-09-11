@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Лаба</title>
+ 	<style type="text/css">
+
+body{
+	background-color: #d9d8e3;
+	/* наследование */
+	color: #26364a;
+	font-family: monospace;
+}
+table {
+	text-align: center;
+}
+/* селектор дочерних элементов*/
+td>form {
+	text-align: center;
+}
+fieldset {
+	text-align: left;
+	border: 3px solid #4d7198;
+	margin-bottom: 7px;
+}
+input {
+	margin: 2px 7px;
+}
+/* селектор потомств - граница для картинок в таблицах */
+td img {
+	border: 3px solid #4d7198;
+	margin-top: 5px;
+}
+/* каскадирование */
+table.inner {
+	border: 3px solid #4d7198;
+	border-collapse: collapse;
+	text-align: left;
+	margin: auto;
+}
+table.inner td {
+	border: 1px solid #4d7198;
+}
+table.inner th {
+	border-bottom: 3px solid #4d7198;
+	border-right: 1px solid #4d7198;
+	padding: 7px;
+}
+#header{
+	text-align: center;
+	height: 80px;
+	width: 100%;
+	vertical-align: middle;
+	background-color: #4d7198;
+	border-radius: 15px;
+}
+#name{
+	font-size: 25px;
+	color: white;
+	font-family: serif;
+}
+tr {
+	padding-top: 5px;
+}
+td{
+	vertical-align: top;
+	padding: 5px;
+}
+#col1{
+	width: 25%;
+	text-align: center;
+}
+#col2{
+	width: 50%;
+
+}
+#col3{
+	width: 25%;
+	text-align: center;
+}
+#footer{
+	text-align: center;
+}
+/* селектор атрибутов - внешний вид кнопки */
+input[type="submit"] {
+	background-color: #4d7198;
+	border-radius: 10px;
+	color: white;
+	font-family: monospace;
+	padding: 3px 7px;
+}
+input[type="submit"]:hover {
+	background-color: #688bb0;
+}
+
+ 	</style>	
+	<script type="text/javascript">
+	<!--
+  	 	function checkForm(form){
+
+  	 		valid = true;
+  	 		message = "<b>Форма содержит следующие ошибки:</b><br>";
+
+  	 		if (!(document.getElementById("x0").checked || document.getElementById("x1").checked || document.getElementById("x2").checked || document.getElementById("x3").checked || document.getElementById("x4").checked || document.getElementById("x5").checked || document.getElementById("x6").checked || document.getElementById("x7").checked || document.getElementById("x8").checked)) {
+
+				message += "Выберите хотя бы одно значение X<br>";
+  	 			valid = false;
+  	 		}
+
+  	 		if (isNaN(+(document.data.y.value))) {
+  	 			message += "Y должен быть числом<br>";
+  	 			valid = false;
+  	 		}
+
+  	 		else if (document.data.y.value.length > 17) {
+  	 			message += "Длина строки с Y не должна превышать 17 символов<br>";
+  	 			valid = false;
+  	 		}
+
+  	 		else if (parseFloat(document.data.y.value) >= 3 || parseFloat(document.data.y.value) <= -3) {
+  	 			message += "Y должен принадлежать промежутку (-3; 3)<br>";
+  	 			valid = false;
+  	 		}
+
+  	 		if (!(document.getElementById("y0").checked || document.getElementById("y1").checked || document.getElementById("y2").checked || document.getElementById("y3").checked || document.getElementById("y4").checked)) {
+
+  	 			message += "Выберите хотя бы одно значение R<br>";
+  	 			valid = false;
+  	 		}
+
+  	 		if (!valid) {
+  	 			document.getElementById("errors").innerHTML = message;
+  	 		}
+  	 		return valid;
+
+    	}
+ 	//-->
+	</script>
+</head>
+
+<body>
+<table>
+	<tr><td id="header" colspan="3">
+		<p id="name">
+			Лабораторная работа №1 <br>
+			Котелевский Павел Георгиевич P3201 Вариант 18108
+		</p>
+    <td></tr>
+    <tr id="content">
+    	<td id="col1">
+    	Приложение определяет, входят ли указанные пользователем точки в заданную область.
+    	</td>
+    	<td id="col2">		
+		<form name="data" onsubmit="return checkForm();" method="post" action="script.php">
+			<fieldset>
+				<legend>Значения Х</legend>
+				<label><input type="checkbox" name="x[]" value="-4" id="x0"> - -4</label><br>
+				<label><input type="checkbox" name="x[]" value="-3" id="x1"> - -3</label><br>
+				<label><input type="checkbox" name="x[]" value="-2" id="x2"> - -2</label><br>
+				<label><input type="checkbox" name="x[]" value="-1" id="x3"> - -1</label><br>
+				<label><input type="checkbox" name="x[]" value="0" id="x4"> - 0</label><br>
+				<label><input type="checkbox" name="x[]" value="1" id="x5"> - 1</label><br>
+				<label><input type="checkbox" name="x[]" value="2" id="x6"> - 2</label><br>
+				<label><input type="checkbox" name="x[]" value="3" id="x7"> - 3</label><br>
+				<label><input type="checkbox" name="x[]" value="4" id="x8"> - 4</label><br>
+			</fieldset>
+			<fieldset>
+				<legend>Значение Y</legend>
+				Введите значение (-3; 3)
+				<p><input type="text" name="y" required>
+			</fieldset>
+			<fieldset>
+				<legend>Значения R</legend>
+				<label><input type="checkbox" name="r[]" value="1" id="y0"> - 1</label><br>
+				<label><input type="checkbox" name="r[]" value="1.5" id="y1"> - 1.5</label><br>
+				<label><input type="checkbox" name="r[]" value="2" id="y2"> - 2</label><br>
+				<label><input type="checkbox" name="r[]" value="2.5" id="y3"> - 2.5</label><br>
+				<label><input type="checkbox" name="r[]" value="3" id="y4"> - 3</label><br>
+			</fieldset>
+			<div id="errors"></div>
+			<input type="submit" value="Отправить">
+		</form>
+		</td>
+		<td id="col3">
+		<img src="areas.png">
+		</td>			
+	</tr>
+	<tr>
+		<td id="footer" colspan="3"><p id="footer-text">&copy; Университет ИТМО 2018</p></td>
+	</tr>
+</table>
+
+</body>
+</html>
