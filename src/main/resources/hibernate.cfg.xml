@@ -1,0 +1,38 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+  "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+
+    <property name="hibernate.dialect">
+      org.hibernate.dialect.PostgreSQL82Dialect
+    </property>
+
+    <property name="hibernate.connection.driver_class">
+      org.postgresql.Driver
+    </property>
+
+
+    <property name="hibernate.connection.url">
+      <!--jdbc:mysql://localhost:3306/test-->
+      <!--jdbc:postgresql://pg:5432/studs-->
+      jdbc:postgresql://pg:5432/studs
+    </property>
+
+    <property name="hibernate.connection.username">
+      s244701
+    </property>
+
+    <property name="hibernate.connection.password">
+      pgr345
+    </property>
+
+
+    <property name="show_sql">true</property>
+
+    <mapping class="ru.bepis.model.Token"/>
+    <mapping class="ru.bepis.model.UserCredentials"/>
+    <mapping class="ru.bepis.model.Verdict"/>
+
+  </session-factory>
+</hibernate-configuration>
